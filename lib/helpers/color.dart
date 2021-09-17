@@ -25,6 +25,10 @@ class MyColor extends Color {
       hexColor = '#EBF0F9';
     }else if(type == 'line'){
       hexColor = '#C4C4C4';
+    }else if(type == 'font-default'){
+      hexColor = '#000000';
+    }else if(type == 'font-bg'){
+      hexColor = '#4A667B';
     }
     hexColor = hexColor.toUpperCase().replaceAll("#", "");
     if (hexColor.length == 6) {
