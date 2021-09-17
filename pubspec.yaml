@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.14.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -30,6 +30,20 @@ dependencies:
   cupertino_icons: ^1.0.2
   splashscreen:
   material_design_icons_flutter: 4.0.5955
+  http:
+  shared_preferences:
+  progress_dialog:
+  get_mac:
+  google_maps_flutter: ^2.0.8
+  geolocator: ^7.6.0
+  location: ^4.2.0
+  intl: ^0.17.0
+  camera: ^0.9.3
+  video_player: ^2.2.3
+  esys_flutter_share: ^1.0.2
+  path_provider: ^1.6.1
+  device_info: ^2.0.2
+  device_info_plus: ^2.1.0
 
 dev_dependencies:
   flutter_test:
@@ -57,6 +71,7 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - lib/assets/images/
+    - lib/assets/icon/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
