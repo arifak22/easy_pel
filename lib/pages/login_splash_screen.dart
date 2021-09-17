@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:splashscreen/splashscreen.dart';
 
-class MainSplashScreen extends StatelessWidget {
+class LoginSplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
     return SplashScreen(
       seconds: 3,
-      navigateAfterSeconds: '/login',
+      navigateAfterSeconds: '/main',
       photoSize: 100,
       image: Image.asset('lib/assets/images/logo.png'),
     );
