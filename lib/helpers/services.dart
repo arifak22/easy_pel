@@ -25,6 +25,7 @@ var apiList = [
 
   Api(apiID: 3, name: 'Waktu', uri:'services/datetime'),
   Api(apiID: 4, name: 'postPresensi', uri:'presensi/submit'),
+  Api(apiID: 5, name: 'getPresensi', uri:'presensi/list'),
 
 ];
 
@@ -221,7 +222,7 @@ class Services {
     token = preferences.getString('token')!;
     List<Api> apiData = apiList.where((element) => element.name == uri).toList();
     var url = apiData[0].uri;
-   // print(Uri.parse('${baseUrl}/$url?token=${token}&$parameters'));
+    // print(Uri.parse('${baseUrl}/$url?token=${token}&$parameters'));
     try {
       if (parameters == null) {
         res = await http
