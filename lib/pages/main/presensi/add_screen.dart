@@ -5,6 +5,7 @@ import 'dart:io';
 
 import 'package:easy_pel/camera/camera.dart';
 import 'package:easy_pel/camera/preview.dart';
+import 'package:easy_pel/pages/main/presensi/history_screen.dart';
 
 import 'package:easy_pel/pages/main/presensi/list_screen.dart';
 
@@ -158,14 +159,15 @@ class _AddScreenState extends State<AddScreen> {
       // var data;
       preferences = await SharedPreferences.getInstance();
       var id = preferences.getString('id')!;
-      Services().postApiFile('postPresensi', {
+      var data = {
         'user_login' : id,
         'waktu'      : waktu,
         'jenis_absen': 'I',
         // 'foto'       : imgPath,
         'latitude'   : _position.latitude.toString(),
         'longitude'  : _position.longitude.toString(),
-      }, {'foto' : imgPath}).then((val) {
+      };
+      Services().postApiFile('postPresensi', data, {'foto' : imgPath}).then((val) async {
         // print(val);
         // return;
         if (val['api_status'] == 1) {
@@ -189,9 +191,15 @@ class _AddScreenState extends State<AddScreen> {
           setState(() {
             _isLoading = false;
           });
+          var temp = await Services().getSession('temp');
+          var tempResult = json.decode(temp);
+          tempResult.add(data);
+          
+          preferences = await SharedPreferences.getInstance();
+          preferences.setString('temp', json.encode(tempResult));
           showDialog(context: context, builder: (_) =>AlertDialog(
             title: Text('Something wrong'),
-            content: Text('${val['api_message']}'),
+            content: Text('Presensi Gagal di kirim. Cek Riwayat Gagal !'),
             actions: <Widget>[ElevatedButton(onPressed: ()=>{Navigator.pop(context)}, child: Text('Ok'))],
           ));
         }
@@ -234,7 +242,12 @@ class _AddScreenState extends State<AddScreen> {
                   Column(
                     children: <Widget>[
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                           Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => HistoryScreen())
+                          );
+                        },
                         child: Icon(MdiIcons.history, color: Colors.white),
                         style: ElevatedButton.styleFrom(
                           shape: CircleBorder(),
@@ -245,7 +258,7 @@ class _AddScreenState extends State<AddScreen> {
                       ),
                       Container(
                         margin: EdgeInsets.only(top: 5),
-                        child: Text('History Gagal', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),),
+                        child: Text('Riwayat Gagal', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),),
                       ),
                     ]
                   ),

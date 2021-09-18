@@ -26,6 +26,7 @@ var apiList = [
   Api(apiID: 3, name: 'Waktu', uri:'services/datetime'),
   Api(apiID: 4, name: 'postPresensi', uri:'presensi/submit'),
   Api(apiID: 5, name: 'getPresensi', uri:'presensi/list'),
+  Api(apiID: 6, name: 'postTempPresensi', uri:'presensi/submittemp'),
 
 ];
 
@@ -67,6 +68,7 @@ class Services {
           preferences.setString('name', response['data']["NAMA"]);
           preferences.setString('position', json.encode(response['titik_absen']));
           preferences.setString('zona_waktu', response['titik_absen'][0]["ZONA_WAKTU"]);
+          preferences.setString('temp', json.encode([]));
           print(response['titik_absen']);
           return response;
         } else {
@@ -311,9 +313,9 @@ class Services {
   }
 
   getSession(String name) async{
-    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences = await SharedPreferences.getInstance();
     var result = preferences.getString(name);
-    print(result);
+    // print(result);
     return result;
   }
 }
