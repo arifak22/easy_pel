@@ -6,47 +6,7 @@ import 'package:easy_pel/helpers/widget.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-const List<String> months = const <String>[
-  'Januari',
-  'Februari',
-  'Maret',
-  'April',
-  'Mei',
-  'Juni',
-  'Juli',
-  'Agustus',
-  'September',
-  'Oktober',
-  'November',
-  'Desember',
-];
 
-const List<String> value_months = const <String>[
-  '01',
-  '02',
-  '03',
-  '04',
-  '05',
-  '06',
-  '07',
-  '08',
-  '09',
-  '10',
-  '11',
-  '12',
-];
-
-const List<String> years = const <String>[
-  '2019',
-  '2020',
-  '2021',
-  '2022',
-  '2023',
-  '2024',
-  '2025',
-  '2026',
-  '2027',
-];
 
 Widget listPresensi(dynamic data){
   MaterialColor _color = Colors.green;

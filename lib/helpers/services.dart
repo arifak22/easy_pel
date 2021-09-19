@@ -28,14 +28,14 @@ var apiList = [
   Api(apiID: 5, name: 'getPresensi', uri:'presensi/list'),
   Api(apiID: 6, name: 'postTempPresensi', uri:'presensi/submittemp'),
 
+  Api(apiID: 7, name: 'getPenghasilan', uri:'penghasilan/data'),
+
+
 ];
 
 class Services {
-  //  static const String _baseUrl = 'http://sampah.tgemas.pelindo.co.id/dev/neraca/public/';
- static const String baseUrl = 'https://imais.pel.co.id/ci/api';
+ static const String baseUrl = false ?'http://localhost:8080/ci/api' :'https://imais.pel.co.id/ci/api';
 
-//  static const String baseUrl = 'http://sampah.tgemas.pelindo.co.id/api/transaksi';
-//  static const String baseUrl = 'http://sampah.tgemas.pelindo.co.id/dev/neraca/public/api/transaksi';
   late SharedPreferences preferences;
   var res, jsonData;
   late Map<String, dynamic> response;
