@@ -46,7 +46,7 @@ class Services {
 
   Future postLogin(String username, String password, String deviceID, String force) async {
     String url = '${baseUrl}/login/cek_loginv3';
-    // print(url);
+    print(url);
     try {
       res = await http.post(
         Uri.parse(url),
@@ -58,7 +58,7 @@ class Services {
         },
       ).timeout(Duration(seconds: 10));
       response = json.decode(res.body);
-      // print(response);
+      print(response);
       if (res.statusCode == 200) {
         if (response['api_status'] == 1) {
           preferences = await SharedPreferences.getInstance();
@@ -72,7 +72,7 @@ class Services {
           print(response['titik_absen']);
           return response;
         } else {
-          // print(response['api_status']);
+          print(response['api_status']);
           return response;
         }
         // preferences.setString('token', response["access_token"]);
@@ -85,7 +85,7 @@ class Services {
         return response;
       }
     } catch (e) {
-      // print(e);
+      print(e);
       response = {
         'api_status': 0,
         'api_message': '$e',

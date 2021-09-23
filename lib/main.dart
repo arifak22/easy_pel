@@ -75,8 +75,8 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Easy PEL',
-      // debugShowMaterialGrid: true,
-      debugShowCheckedModeBanner: true,
+      debugShowMaterialGrid: false,
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         scaffoldBackgroundColor: MyColor('bg'),
         buttonColor            : MyColor('primary'),

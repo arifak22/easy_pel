@@ -186,9 +186,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
             SingleChildScrollView(
-              child: Expanded(
-                flex: 2,
-                child: Container(
+              child: Container(
                   margin: const EdgeInsets.only(left: 20, right: 20, top: 50),
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
@@ -274,7 +272,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     )
                   ),
                 ),
-              ),
             ),
             Expanded(
               flex: 1,
