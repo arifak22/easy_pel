@@ -34,6 +34,7 @@ dependencies:
   shared_preferences:
   progress_dialog:
   get_mac:
+  # advance_pdf_viewer:
   google_maps_flutter: ^2.0.8
   geolocator: ^7.6.0
   location: ^4.2.0
@@ -44,6 +45,9 @@ dependencies:
   path_provider: ^1.6.1
   device_info: ^2.0.2
   device_info_plus: ^2.1.0
+  timeline_tile: ^2.0.0
+  flutter_pdfview: ^1.2.1
+  flutter_speed_dial: ^4.4.0+1
 
 dev_dependencies:
   flutter_test:
@@ -72,6 +76,7 @@ flutter:
   assets:
     - lib/assets/images/
     - lib/assets/icon/
+    - lib/assets/pdf/sample.pdf
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

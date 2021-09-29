@@ -29,6 +29,9 @@ var apiList = [
   Api(apiID: 6, name: 'postTempPresensi', uri:'presensi/submittemp'),
 
   Api(apiID: 7, name: 'getPenghasilan', uri:'penghasilan/data'),
+  Api(apiID: 8, name: 'getKetidakhadiran', uri:'presensi/list_ketidakhadiran'),
+  Api(apiID: 9, name: 'getKetidakhadiranDetail', uri:'presensi/ketidakhadiran_detail'),
+  Api(apiID: 10, name: 'getLampiran', uri:'presensi/lampiran'),
 
 
 ];

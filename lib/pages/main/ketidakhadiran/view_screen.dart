@@ -1,119 +1,114 @@
+
+
+import 'package:easy_pel/helpers/color.dart';
 import 'package:easy_pel/helpers/services.dart';
+import 'package:easy_pel/helpers/widget.dart';
+import 'package:easy_pel/pages/main/ketidakhadiran/detail_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:easy_pel/helpers/color.dart';
-import 'package:easy_pel/helpers/widget.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
-
-Widget listPresensi(dynamic data){
-  MaterialColor _color = Colors.green;
-
-  if(data['COLOR'] == 'primary'){
-    _color = Colors.green;
-  }else if(data['COLOR'] == 'danger'){
-    _color = Colors.red;
-  }else if(data['COLOR'] == 'warning'){
-    _color = Colors.yellow;
-  }
-  return Container(
-    width  : double.infinity,
-    margin : EdgeInsets.only(bottom: 20, left: 20, right: 20),
-    padding: EdgeInsets.all(20),
-    decoration: BoxDecoration(
-      color: HexColor('#FFFFFF'),
-      // borderRadius: BorderRadius.all(Radius.circular(5)),
-      border: Border(
-        left: BorderSide(color: _color, width: 4),
-
-      ),
-      // borderRadius: BorderRadius.only(topLeft: Radius.circular(5))
-    ),
-    child: Row(
-      // mainAxisAlignment: MainAxisAlignment.center,
-      // crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: <Widget>[
-        Expanded(
-          flex: 1,
-          child: Container(
-            alignment: Alignment.center,
-            child: Text(data['STATUS'], 
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 15, 
-                color: _color, 
-                background: Paint()..color = MyColor('bg')
-                ..strokeWidth = 10
-                ..style = PaintingStyle.stroke,
-              ),
-            ),
-          )
-        ),
-        Expanded(
-          flex: 2,
-          child: Container(
-            alignment: Alignment.center,
-            child: Column(
-              children: <Widget>[
-                Text(data['TANGGAL_INDO'], 
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 5),
-                  child:  Text('${data["IN"]} s/d ${data["OUT"]}')
-                )
-              ],
-            )
-          )
-        ),
-      ],
-    )
-  );
-}                
-class ListScreen extends StatefulWidget {
+class ViewScreen extends StatefulWidget {
   @override
-  _ListScreenState createState() => _ListScreenState();
+  State<ViewScreen> createState() => ViewScreenState();
 }
 
-class _ListScreenState extends State<ListScreen> {
-  bool _isLoading = true;
-  int _selectedMonth = months.indexWhere((element) => element == DateFormat('MMMM', 'id_ID').format(DateTime.now()));
-  int _selectedYear = years.indexWhere((element) => element == DateFormat('y').format(DateTime.now()));
-  List data = [];
+class ViewScreenState extends State<ViewScreen> {
+  int  _selectedMonth = months.indexWhere((element) => element == DateFormat('MMMM', 'id_ID').format(DateTime.now()));
+  int  _selectedYear  = years.indexWhere((element) => element == DateFormat('y').format(DateTime.now()));
+  bool _isLoading     = true;
+  List data           = [];
+  String sisa_cuti = '-';
+  String sisa_cuti_setengah = '-';
   ScrollController _scrollController = ScrollController();
-  String total_hari   = '0';
-  String hari_sebulan = '0';
-  double potongan = 0;
 
+  Widget listKetidakhadiran(dynamic data){
+
+    return Container(
+      width  : double.infinity,
+      margin : EdgeInsets.only(bottom: 20, left: 20, right: 20),
+      padding: EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: HexColor('#FFFFFF'),
+        // borderRadius: BorderRadius.all(Radius.circular(5)),
+        border: Border(
+          left: BorderSide(color: HexColor(data['VALIDATE_COLOR2']), width: 4),
+
+        ),
+        // borderRadius: BorderRadius.only(topLeft: Radius.circular(5))
+      ),
+      child: InkWell(
+        onTap: (){
+          Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => DetailScreen(id: data['ABSENSI_IJIN_ID'], pegawai_id: data['PEGAWAI_ID'],)),
+            );
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Expanded(
+                  flex: 2,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(data['NAMA']),
+                      Text(data['JENIS_IJIN']),
+                      Text(''),
+                      Text('Permohonan: \n' + data['TANGGAL_PERMOHONAN_INDO']),
+                    ],
+                  )
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(data['VALIDATE_MSG2'], 
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 15, 
+                          color: HexColor(data['VALIDATE_COLOR2']), 
+                          backgroundColor: MyColor('bg')
+                        ),
+                      ),
+                    ],
+                  )
+                ),
+              ],
+            ),
+            Text('Waktu : \n' + data['TANGGAL_AWAL_INDO'] + ' s/d ' + data['TANGGAL_AKHIR_INDO'])
+          ],
+        ),
+      )
+    );
+  }  
   Future<void> getData() async {
     if(!mounted) return;
     var pegawai_id = await Services().getSession('pegawai_id');
-    var periode = value_months[_selectedMonth] + years[_selectedYear];
+    var periode = years[_selectedYear] + value_months[_selectedMonth] ;
     // print(pegawai_id);
     // print(periode);
     // return;
     setState(() {
       _isLoading = true;
     });
-    Services().getApi('getPresensi', "pegawai_id=${pegawai_id}&periode=${periode}").then((val) {
+    Services().getApi('getKetidakhadiran', "pegawai_id=${pegawai_id}&periode=${periode}").then((val) {
       if (val['api_status'] == 1) {
         setState(() {
           data = val['data'];
-          total_hari = val['kerja']['TOTAL_HARI'].toString();
-          hari_sebulan = val['kerja']['HARI_SEBULAN'].toString();
-          potongan = double.parse(val['kerja']['POTONGAN']);
+          sisa_cuti = val['sisa_cuti'];
+          sisa_cuti_setengah = val['sisa_cuti_setengah'];
           _isLoading =false;
         });
-        // print(data);
       }else{
         setState(() {
           data = [];
-          total_hari   = '0';
-          hari_sebulan = '0';
-          potongan = 0.00;
           _isLoading =false;
         });
       }
@@ -132,11 +127,11 @@ class _ListScreenState extends State<ListScreen> {
       }
     });
   }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: appBar('Daftar Presensi'),
+    var periode = value_months[_selectedMonth] + years[_selectedYear];
+    return new Scaffold(
+      appBar: appBar('Ketidakhadiran'),
       body: Column(
         // mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -210,7 +205,7 @@ class _ListScreenState extends State<ListScreen> {
                         );
                       }).whenComplete(() => 
                         {
-                          getData()
+                          // getData()
                         }
                       );
                   }),
@@ -232,42 +227,65 @@ class _ListScreenState extends State<ListScreen> {
                       borderRadius: BorderRadius.all(Radius.circular(25)),
                       border: Border.all(color: MyColor('line'))
                   ),
-                  child: Text('Total Hari: ${total_hari} / ${hari_sebulan}'),
+                  child: Text('Sisa Cuti Tahunan: ' + sisa_cuti),
                 ),
                 Container(
-                  margin: EdgeInsets.only(right: 5),
+                  margin: EdgeInsets.only(right: 5, bottom: 5),
                   padding: EdgeInsets.only(top: 5, bottom: 5, left: 15, right: 15),
                   decoration: BoxDecoration(
                       color: HexColor('#FFFFFF'),
                       borderRadius: BorderRadius.all(Radius.circular(25)),
                       border: Border.all(color: MyColor('line'))
                   ),
-                  child: Text('Potongan: Rp. ${NumberFormat.decimalPattern('id_ID').format(potongan)}'),
+                  child: Text('Sisa Cuti Setengah Hari: ' + sisa_cuti_setengah),
                 ),
-              ],
-            ),
+              ]
+            )
           ),
           Expanded(
             flex: 1,
-            child:Center(
-                child: _isLoading ? CircularProgressIndicator() : RefreshIndicator(
-                  onRefresh: () async{
-                    getData();
-                  },
-                  child: ListView.builder(
-                    itemCount: data.length,
-                    // controller: _scrollController,
-                      itemBuilder: (context, i){
-                        // print(data[i]);
-                        return listPresensi(data[i]);
-                      },
-                  ),
+            child: Center(
+              child: _isLoading ? CircularProgressIndicator() : RefreshIndicator(
+                onRefresh: () async{
+                  getData();
+                },
+                child: ListView.builder(
+                  itemCount: data.length,
+                  // controller: _scrollController,
+                    itemBuilder: (context, i){
+                      // print(data[i]);
+                      return listKetidakhadiran(data[i]);
+                    },
                 ),
-            )
+              ),
+            ),
           )
-      ]
-    ),
-        
+        ]
+      ),
+      floatingActionButton: SpeedDial(
+        icon: Icons.more_vert_outlined,
+        backgroundColor: Colors.blue,
+        children: [
+          SpeedDialChild(
+            child: Icon(MdiIcons.checkAll),
+            label: 'Approval SDM',
+            backgroundColor: Colors.lightBlue,
+            onTap: () {/* Do someting */},
+          ),
+          SpeedDialChild(
+            child: Icon(Icons.check),
+            label: 'Approval Atasan',
+            backgroundColor: Colors.lightBlue,
+            onTap: () {/* Do something */},
+          ),
+          SpeedDialChild(
+            child: Icon(MdiIcons.plus),
+            label: 'Tambah',
+            backgroundColor: Colors.lightBlue,
+            onTap: () {/* Do something */},
+          ),
+        ]
+      ),
     );
   }
 }
