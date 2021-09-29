@@ -127,8 +127,8 @@ class _AddScreenState extends State<AddScreen> {
         });
       }else{
         setState(() {
-          waktuText = DateFormat('d MMMM y - hh:mm:ss', 'id_ID').format(DateTime.now());
-          waktu     = DateFormat('y-m-d hh:mm:ss').format(DateTime.now());
+          waktuText = DateFormat('d MMMM y - HH:mm:ss', 'id_ID').format(DateTime.now());
+          waktu     = DateFormat('y-MM-d HH:mm:ss').format(DateTime.now());
         });
       }
     });

@@ -58,10 +58,14 @@ class _CameraScreenState extends State<CameraScreen> {
       );
     }
 
-    return AspectRatio(
-      aspectRatio: cameraController!.value.aspectRatio,
+    final scale = 1 / (cameraController!.value.aspectRatio * MediaQuery.of(context).size.aspectRatio);
+    // return Transform.scale(
+    return Transform.scale(
+      scale: scale,
+      alignment: Alignment.topCenter,
       child: CameraPreview(cameraController!),
     );
+      
   }
 
   Widget cameraControl(context) {
@@ -165,9 +169,15 @@ class _CameraScreenState extends State<CameraScreen> {
     availableCameras().then((value) {
       cameras = value;
       if(cameras.length > 0){
-        setState(() {
-          selectedCameraIndex = 0;
-        });
+        if(cameras.length > 1){
+          setState(() {
+            selectedCameraIndex = 1;
+          });
+        }else{
+          setState(() {
+            selectedCameraIndex = 0;
+          });
+        }
         initCamera(cameras[selectedCameraIndex]).then((value) {
 
         });
@@ -186,10 +196,10 @@ class _CameraScreenState extends State<CameraScreen> {
       body: Container(
         child: Stack(
           children: <Widget>[
-//            Expanded(
-//              flex: 1,
-//              child: _cameraPreviewWidget(),
-//            ),
+          //  Expanded(
+          //    flex: 1,
+          //    child: _cameraPreviewWidget(),
+          //  ),
             Align(
               alignment: Alignment.center,
               child: cameraPreview(),

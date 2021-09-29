@@ -110,7 +110,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
     // print(tempResult);
   }
   void submitKirim(data, i){
-    // print(data);
+    print(data);
 
     setState(() {
       _isLoading = true;
@@ -129,12 +129,13 @@ class _HistoryScreenState extends State<HistoryScreen> {
           getData()
         });
       }else{
+        print(val);
         setState(() {
           _isLoading = false;
         });
         showDialog(context: context, builder: (_) =>AlertDialog(
           title: Text('Something wrong'),
-          content: Text('Cek koneksi internet anda / mohon menunggu beberapa saat.'),
+          content: Text(val['api_message']),
           actions: <Widget>[ElevatedButton(onPressed: ()=>{Navigator.pop(context)}, child: Text('Ok'))],
         ));
       }
