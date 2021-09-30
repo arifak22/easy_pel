@@ -33,11 +33,14 @@ var apiList = [
   Api(apiID: 9, name: 'getKetidakhadiranDetail', uri:'presensi/ketidakhadiran_detail'),
   Api(apiID: 10, name: 'getLampiran', uri:'presensi/lampiran'),
 
+  Api(apiID: 11, name: 'getApprovalAtasan', uri:'presensi/ketidakhadiran_atasan'),
+  Api(apiID: 12, name: 'postApproval', uri:'presensi/approve'),
+
 
 ];
 
 class Services {
- static const String baseUrl = false ?'http://localhost:8080/ci/api' :'https://imais.pel.co.id/ci/api';
+  String baseUrl = true ?'http://localhost:8080/ci/api' :'https://imais.pel.co.id/ci/api';
 
   late SharedPreferences preferences;
   var res, jsonData;
@@ -69,6 +72,7 @@ class Services {
           preferences.setString('id', response['data']["USER_LOGIN_ID"]);
           preferences.setString('pegawai_id', response['data']["PEGAWAI_ID"]);
           preferences.setString('name', response['data']["NAMA"]);
+          preferences.setString('user_group', response['data']["USER_GROUP_ID"]);
           preferences.setString('position', json.encode(response['titik_absen']));
           preferences.setString('zona_waktu', response['titik_absen'][0]["ZONA_WAKTU"]);
           preferences.setString('temp', json.encode([]));

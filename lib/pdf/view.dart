@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:easy_pel/helpers/color.dart';
 import 'package:easy_pel/helpers/widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -170,47 +171,51 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
       appBar: appBar('Detil Ketidakhadiran'),
       body: Stack(
         children: <Widget>[
-          PDFView(
-            filePath: widget.path,
-            enableSwipe: true,
-            swipeHorizontal: true,
-            autoSpacing: false,
-            pageFling: true,
-            pageSnap: true,
-            defaultPage: currentPage!,
-            fitPolicy: FitPolicy.BOTH,
-            preventLinkNavigation:
-                false, // if set to true the link is handled in flutter
-            onRender: (_pages) {
-              setState(() {
-                pages = _pages;
-                isReady = true;
-              });
-            },
-            onError: (error) {
-              setState(() {
-                errorMessage = error.toString();
-              });
-              print(error.toString());
-            },
-            onPageError: (page, error) {
-              setState(() {
-                errorMessage = '$page: ${error.toString()}';
-              });
-              print('$page: ${error.toString()}');
-            },
-            onViewCreated: (PDFViewController pdfViewController) {
-              _controller.complete(pdfViewController);
-            },
-            onLinkHandler: (String? uri) {
-              print('goto uri: $uri');
-            },
-            onPageChanged: (int? page, int? total) {
-              print('page change: $page/$total');
-              setState(() {
-                currentPage = page;
-              });
-            },
+          Container(
+            // padding: EdgeInsets.all(20),
+            color: MyColor('bg'),
+            child: PDFView(
+              filePath       : widget.path,
+              enableSwipe    : true,
+              swipeHorizontal: false,
+              autoSpacing    : true,
+              pageFling      : false,
+              pageSnap       : false,
+              defaultPage    : currentPage!,
+              fitPolicy      : FitPolicy.BOTH,
+              preventLinkNavigation:
+                  false, // if set to true the link is handled in flutter
+              onRender: (_pages) {
+                setState(() {
+                  pages = _pages;
+                  isReady = true;
+                });
+              },
+              onError: (error) {
+                setState(() {
+                  errorMessage = error.toString();
+                });
+                print(error.toString());
+              },
+              onPageError: (page, error) {
+                setState(() {
+                  errorMessage = '$page: ${error.toString()}';
+                });
+                print('$page: ${error.toString()}');
+              },
+              onViewCreated: (PDFViewController pdfViewController) {
+                _controller.complete(pdfViewController);
+              },
+              onLinkHandler: (String? uri) {
+                print('goto uri: $uri');
+              },
+              onPageChanged: (int? page, int? total) {
+                print('page change: $page/$total');
+                setState(() {
+                  currentPage = page;
+                });
+              },
+            ),
           ),
           errorMessage.isEmpty
               ? !isReady

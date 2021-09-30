@@ -3,6 +3,7 @@
 import 'package:easy_pel/helpers/color.dart';
 import 'package:easy_pel/helpers/services.dart';
 import 'package:easy_pel/helpers/widget.dart';
+import 'package:easy_pel/pages/main/ketidakhadiran/approval_screen.dart';
 import 'package:easy_pel/pages/main/ketidakhadiran/detail_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,12 +18,13 @@ class ViewScreen extends StatefulWidget {
 }
 
 class ViewScreenState extends State<ViewScreen> {
-  int  _selectedMonth = months.indexWhere((element) => element == DateFormat('MMMM', 'id_ID').format(DateTime.now()));
-  int  _selectedYear  = years.indexWhere((element) => element == DateFormat('y').format(DateTime.now()));
-  bool _isLoading     = true;
-  List data           = [];
-  String sisa_cuti = '-';
+  int    _selectedMonth     = months.indexWhere((element) => element == DateFormat('MMMM', 'id_ID').format(DateTime.now()));
+  int    _selectedYear      = years.indexWhere((element) => element == DateFormat('y').format(DateTime.now()));
+  bool   _isLoading         = true;
+  List   data               = [];
+  String sisa_cuti          = '-';
   String sisa_cuti_setengah = '-';
+  String user_group         = '0';
   ScrollController _scrollController = ScrollController();
 
   Widget listKetidakhadiran(dynamic data){
@@ -44,7 +46,7 @@ class ViewScreenState extends State<ViewScreen> {
         onTap: (){
           Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => DetailScreen(id: data['ABSENSI_IJIN_ID'], pegawai_id: data['PEGAWAI_ID'],)),
+              MaterialPageRoute(builder: (context) => DetailScreen(id: data['ABSENSI_IJIN_ID'], pegawai_id: data['PEGAWAI_ID'], jenis: '10',)),
             );
         },
         child: Column(
@@ -116,9 +118,18 @@ class ViewScreenState extends State<ViewScreen> {
     // print("running $mounted");
   }
 
+  getUserGroup() async {
+     String ug = await Services().getSession('user_group');
+     print(ug);
+     setState(() {
+       user_group = ug;
+     });
+  }
+
   @override
   void initState() {
     getData();
+    getUserGroup();
     super.initState();
     _scrollController.addListener(() {
       if (_scrollController.position.minScrollExtent ==
@@ -266,17 +277,28 @@ class ViewScreenState extends State<ViewScreen> {
         icon: Icons.more_vert_outlined,
         backgroundColor: Colors.blue,
         children: [
+          user_group == '9' || user_group == '10' ? 
           SpeedDialChild(
             child: Icon(MdiIcons.checkAll),
             label: 'Approval SDM',
             backgroundColor: Colors.lightBlue,
-            onTap: () {/* Do someting */},
-          ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ApprovalScreen(status: user_group == '9' ? '1' : '2')),
+              );
+            },
+          ) : SpeedDialChild(),
           SpeedDialChild(
             child: Icon(Icons.check),
             label: 'Approval Atasan',
             backgroundColor: Colors.lightBlue,
-            onTap: () {/* Do something */},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ApprovalScreen(status: '0')),
+              );
+            },
           ),
           SpeedDialChild(
             child: Icon(MdiIcons.plus),
