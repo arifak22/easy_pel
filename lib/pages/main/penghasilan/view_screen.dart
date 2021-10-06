@@ -67,9 +67,11 @@ class ViewScreenState extends State<ViewScreen> {
       });
     }
     if(type =='penerimaan'){
+      String transport_hari = data['penerimaan_transport'].length > 0 ? data['penerimaan_transport']['MASUK_KERJA'].toString() : '-'; 
+      String transport_jumlah = data['penerimaan_transport'].length > 0 ? data['penerimaan_transport']['JUMLAH'].toString() : '-'; 
       listDetail.add({
-        'name' : 'Bantuan Transport \n(' + data['penerimaan_transport']['hari_kerja'] + ' Hari Kerja)',
-        'value' : data['penerimaan_transport']['bantuan_transport']
+        'name' : 'Bantuan Transport \n(' +transport_hari + ' Hari Kerja)',
+        'value' : transport_jumlah
       });
     }
     DateFormat format = DateFormat("yyyy-MM-dd hh:mm:ss");

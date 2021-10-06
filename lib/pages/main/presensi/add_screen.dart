@@ -128,7 +128,7 @@ class _AddScreenState extends State<AddScreen> {
       }else{
         setState(() {
           waktuText = DateFormat('d MMMM y - HH:mm:ss', 'id_ID').format(DateTime.now());
-          waktu     = DateFormat('y-MM-d HH:mm:ss').format(DateTime.now());
+          waktu     = DateFormat('y-MM-dd HH:mm:ss').format(DateTime.now());
         });
       }
     });

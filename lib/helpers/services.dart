@@ -35,12 +35,24 @@ var apiList = [
 
   Api(apiID: 11, name: 'getApprovalAtasan', uri:'presensi/ketidakhadiran_atasan'),
   Api(apiID: 12, name: 'postApproval', uri:'presensi/approve'),
+  Api(apiID: 13, name: 'getListAtasan', uri:'presensi/list_atasan'),
+  Api(apiID: 14, name: 'getListJenisIjin', uri:'presensi/list_jenisijin'),
+  Api(apiID: 15, name: 'getListIjinPenting', uri:'presensi/list_ijinpenting'),
+  Api(apiID: 16, name: 'postKetidakhadiran', uri:'presensi/ajukan_ketidakhadiran'),
+  Api(apiID: 17, name: 'postHapusKetidakhadiran', uri:'presensi/hapus_ketidakhadiran'),
+  Api(apiID: 18, name: 'postLampiran', uri:'presensi/tambah_lampiran'),
+  Api(apiID: 19, name: 'postHapusLampiran', uri:'presensi/hapus_lampiran'),
+  Api(apiID: 19, name: 'postKirimAtasan', uri:'presensi/kirim_atasan'),
 
 
 ];
 
+
+isDebug() {
+  return false;
+}
 class Services {
-  String baseUrl = true ?'http://localhost:8080/ci/api' :'https://imais.pel.co.id/ci/api';
+  String baseUrl = isDebug() ?'http://localhost:8080/ci/api' :'https://imais.pel.co.id/ci/api';
 
   late SharedPreferences preferences;
   var res, jsonData;

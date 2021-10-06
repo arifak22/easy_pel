@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:easy_pel/helpers/color.dart';
 import 'package:easy_pel/helpers/services.dart';
 import 'package:easy_pel/helpers/widget.dart';
+import 'package:easy_pel/pages/main/ketidakhadiran/add_screen.dart';
+import 'package:easy_pel/pages/main/ketidakhadiran/lampiran_screen.dart';
 import 'package:easy_pel/pdf/view.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -175,6 +177,113 @@ class DetailScreenState extends State<DetailScreen> {
         }
       });
   }
+
+  kirimAtasan() async {
+      var pegawai_id    = await Services().getSession('pegawai_id');
+      var id            = widget.id;
+      var data = {
+        'pegawai_id' : pegawai_id,
+        'id'         : id,
+      };
+      Services().postApi('postKirimAtasan', data).then((val) async {
+        if (val['api_status'] == 1) {
+          showDialog(context: context, builder: (_) =>AlertDialog(
+            title  : Text('Berhasil'),
+            content: Text('${val['api_message']}'),
+            actions: <Widget>[ElevatedButton(onPressed: ()=>Navigator.pop(context), child: Text('Ok'))],
+          )).then((value) => {
+            getData()
+          });
+        }else{
+          showDialog(context: context, builder: (_) =>AlertDialog(
+            title: Text('Something wrong'),
+            content: Text('${val['api_message']}'),
+            actions: <Widget>[ElevatedButton(onPressed: ()=>Navigator.pop(context), child: Text('Ok'))],
+          ));
+        }
+      });
+  }
+
+  hapusData() async {
+      var pegawai_id    = await Services().getSession('pegawai_id');
+      var id            = widget.id;
+      var data = {
+        'pegawai_id'   : pegawai_id,
+        'id'           : id,
+      };
+      Services().postApi('postHapusKetidakhadiran', data).then((val) async {
+        if (val['api_status'] == 1) {
+          showDialog(context: context, builder: (_) =>AlertDialog(
+            title  : Text('Berhasil'),
+            content: Text('${val['api_message']}'),
+            actions: <Widget>[ElevatedButton(onPressed: ()=>Navigator.pop(context), child: Text('Ok'))],
+          )).then((value) => {
+            Navigator.pop(
+              context
+            )
+          });
+        }else{
+          showDialog(context: context, builder: (_) =>AlertDialog(
+            title: Text('Something wrong'),
+            content: Text('${val['api_message']}'),
+            actions: <Widget>[ElevatedButton(onPressed: ()=>Navigator.pop(context), child: Text('Ok'))],
+          ));
+        }
+      });
+  }
+
+  hapusLampiran(id_lampiran) async {
+      var pegawai_id    = await Services().getSession('pegawai_id');
+      var id            = widget.id;
+      var data = {
+        'pegawai_id' : pegawai_id,
+        'id'         : id,
+        'lampiran_id': id_lampiran,
+      };
+      Services().postApi('postHapusLampiran', data).then((val) async {
+        if (val['api_status'] == 1) {
+          showDialog(context: context, builder: (_) =>AlertDialog(
+            title  : Text('Berhasil'),
+            content: Text('${val['api_message']}'),
+            actions: <Widget>[ElevatedButton(onPressed: ()=>Navigator.pop(context), child: Text('Ok'))],
+          )).then((value) => {
+            getData()
+          });
+        }else{
+          showDialog(context: context, builder: (_) =>AlertDialog(
+            title: Text('Something wrong'),
+            content: Text('${val['api_message']}'),
+            actions: <Widget>[ElevatedButton(onPressed: ()=>Navigator.pop(context), child: Text('Ok'))],
+          ));
+        }
+      });
+  }
+
+  dynamic popMenuList(){
+    if(data['VALIDATE_STATUS'] == '0' || data['VALIDATE_STATUS'] == '-2'){
+      return [
+        PopupMenuItem(
+          child: Text("Kirim Atasan"),
+          value: 1,
+        ),
+        PopupMenuItem(
+          child: Text("Ubah"),
+          value: 2,
+        ),
+        PopupMenuItem(
+          child: Text("Hapus"),
+          value: 3
+        )
+      ];
+    }else{
+      return [
+        PopupMenuItem(
+          child: Text("Hapus"),
+          value: 3
+        )
+      ];
+    }
+}
   
   @override
   Widget build(BuildContext context) {
@@ -248,18 +357,93 @@ class DetailScreenState extends State<DetailScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(data['NAMA'], style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Flexible(
+                                child: Text(data['NAMA'], style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))
+                              ),
+                              widget.jenis == '10' ? 
+                              PopupMenuButton(
+                                icon: Icon(Icons.more_vert),
+                                onSelected: (val){
+                                  if(val == 1){
+                                    showDialog(context: context, builder: (_) =>AlertDialog(
+                                      title: Text('KIRIM ATASAN'),
+                                      content: Text('Apakah anda yakin mengirim ke atasan?'),
+                                      actions: <Widget>[
+                                        OutlinedButton(
+                                          onPressed: ()=>Navigator.pop(context), child: Text('Tidak')
+                                        ),
+                                        ElevatedButton(
+                                          onPressed: ()=> {
+                                            Navigator.pop(context),
+                                            kirimAtasan()
+                                          }, child: Text('Ya'),
+                                        ),
+                                      ],
+                                    ));
+                                  }else if(val == 3){
+                                    showDialog(context: context, builder: (_) =>AlertDialog(
+                                      title: Text('HAPUS DATA'),
+                                      content: Text('Apakah anda yakin menghapus data ini?'),
+                                      actions: <Widget>[
+                                        OutlinedButton(
+                                          onPressed: ()=>Navigator.pop(context), child: Text('Tidak')
+                                        ),
+                                        ElevatedButton(
+                                          onPressed: ()=> {
+                                            Navigator.pop(context),
+                                            hapusData()
+                                          }, child: Text('Ya'),
+                                        ),
+                                      ],
+                                    ));
+                                  }else if(val == 2){
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => AddScreen(id: widget.id),)
+                                    ).then((value) => 
+                                    {
+                                      getData()
+                                    }
+                                    );
+                                  }
+                                },
+                                itemBuilder: (context) => popMenuList()
+                            ) : Container()
+                            ],
+                          ),
                           Text(data['JENIS_IJIN']),
-                          Text(''),
+                          // Text(''),
                           Text('Permohonan: \n' + data['TANGGAL_PERMOHONAN_INDO']),
                           Text('Waktu : \n' + data['TANGGAL_AWAL_INDO'] + ' s/d ' + data['TANGGAL_AKHIR_INDO']),
                         ],
                       )
                     ),
                     Container(
-                      margin : EdgeInsets.only(bottom: 5),
+                      margin : EdgeInsets.only(bottom: 0),
                       alignment: Alignment.topLeft,
-                      child: Text('Lampiran', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+                      child: Row(
+                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Lampiran ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+                          widget.jenis == '10' ? data['VALIDATE_STATUS'] == '0' || data['VALIDATE_STATUS'] == '-2' ? InkWell(
+                            onTap: (){
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => LampiranScreen(id: widget.id),)
+                              ).then((value) => 
+                                {
+                                  getData()
+                                }
+                              );
+                            },
+                            child: Text(' (+)', style: TextStyle(fontSize: 17) )
+                          )  : Container() : Container()
+                        ],
+                      ),
                     ),
                     Container(
                       // margin : EdgeInsets.only(bottom: 20, left: 20, right: 20, top: 5),
@@ -278,7 +462,7 @@ class DetailScreenState extends State<DetailScreen> {
                               );
                             },
                             child:Container(
-                              width  : double.infinity,
+                              width  : double.infinity - 50,
                               margin : EdgeInsets.only(bottom: 7),
                               padding: EdgeInsets.all(8),
                               decoration: BoxDecoration(
@@ -290,9 +474,36 @@ class DetailScreenState extends State<DetailScreen> {
                                 // borderRadius: BorderRadius.only(topLeft: Radius.circular(5))
                               ),
                               child:  Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment : MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Icon(MdiIcons.pdfBox),
-                                  Text(lampiran[i]['KETERANGAN']),
+                                  Row(
+                                    children: [
+                                      Icon(MdiIcons.pdfBox),
+                                      Text(lampiran[i]['KETERANGAN']),
+                                    ],
+                                  ),
+                                  widget.jenis == '10' ? data['VALIDATE_STATUS'] == '0' || data['VALIDATE_STATUS'] == '-2' ?
+                                  InkWell(
+                                    onTap: (){
+                                      showDialog(context: context, builder: (_) =>AlertDialog(
+                                        title: Text('HAPUS LAMPIRAN'),
+                                        content: Text('Apakah anda yakin menghapus lampiran ini?'),
+                                        actions: <Widget>[
+                                          OutlinedButton(
+                                            onPressed: ()=>Navigator.pop(context), child: Text('Tidak')
+                                          ),
+                                          ElevatedButton(
+                                            onPressed: ()=> {
+                                              Navigator.pop(context),
+                                              hapusLampiran(lampiran[i]['LAMPIRAN_ID'])
+                                            }, child: Text('Ya'),
+                                          ),
+                                        ],
+                                      ));
+                                    },
+                                    child: Icon(Icons.highlight_remove_sharp, color: Colors.red,)
+                                  ) :Container(): Container()
                                 ],
                               )
                             )

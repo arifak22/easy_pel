@@ -5,6 +5,7 @@ import 'package:easy_pel/helpers/services.dart';
 import 'package:easy_pel/helpers/widget.dart';
 import 'package:easy_pel/pages/main/ketidakhadiran/approval_screen.dart';
 import 'package:easy_pel/pages/main/ketidakhadiran/detail_screen.dart';
+import 'package:easy_pel/pages/main/ketidakhadiran/add_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -45,9 +46,13 @@ class ViewScreenState extends State<ViewScreen> {
       child: InkWell(
         onTap: (){
           Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => DetailScreen(id: data['ABSENSI_IJIN_ID'], pegawai_id: data['PEGAWAI_ID'], jenis: '10',)),
-            );
+            context,
+            MaterialPageRoute(builder: (context) => DetailScreen(id: data['ABSENSI_IJIN_ID'], pegawai_id: data['PEGAWAI_ID'], jenis: '10',)),
+          ).then((value) => 
+            {
+              getData()
+            }
+          );
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -216,7 +221,7 @@ class ViewScreenState extends State<ViewScreen> {
                         );
                       }).whenComplete(() => 
                         {
-                          // getData()
+                          getData()
                         }
                       );
                   }),
@@ -304,7 +309,12 @@ class ViewScreenState extends State<ViewScreen> {
             child: Icon(MdiIcons.plus),
             label: 'Tambah',
             backgroundColor: Colors.lightBlue,
-            onTap: () {/* Do something */},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AddScreen(),)
+              );
+            },
           ),
         ]
       ),

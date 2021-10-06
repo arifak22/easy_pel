@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:easy_pel/helpers/services.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_pel/helpers/color.dart';
 import 'package:easy_pel/pages/main_splash_screen.dart';
@@ -74,10 +75,10 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Easy PEL',
-      debugShowMaterialGrid: false,
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
+      title                     : 'Easy PEL',
+      // debugShowMaterialGrid     : isDebug(),
+      debugShowCheckedModeBanner: isDebug(),
+      theme                     : ThemeData(
         scaffoldBackgroundColor: MyColor('bg'),
         buttonColor            : MyColor('primary'),
         primaryColor           : MyColor('default'),
