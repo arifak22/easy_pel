@@ -405,9 +405,9 @@ class DetailScreenState extends State<DetailScreen> {
                                       context,
                                       MaterialPageRoute(builder: (context) => AddScreen(id: widget.id),)
                                     ).then((value) => 
-                                    {
-                                      getData()
-                                    }
+                                      {
+                                        getData()
+                                      }
                                     );
                                   }
                                 },

@@ -2,19 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>This app needs access to location when open.</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>This app needs access to location when in the background.</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>This app needs access to location when in the background.</string>
-	<key>NSCameraUsageDescription</key>
-	<string>Can I use the camera please?</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Can I use the mic please?</string>
-	
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>Easy PEL</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -30,9 +21,17 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>The App needs the permission to access your camera to take your photo.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>The App needs the permission to active camera library</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>The App needs the permission to know your point when send the presence.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>The App needs the permission to access your library to upload the file.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

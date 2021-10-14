@@ -291,6 +291,10 @@ class ViewScreenState extends State<ViewScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => ApprovalScreen(status: user_group == '9' ? '1' : '2')),
+              ).then((value) => 
+                {
+                  getData()
+                }
               );
             },
           ) : SpeedDialChild(),
@@ -302,6 +306,10 @@ class ViewScreenState extends State<ViewScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => ApprovalScreen(status: '0')),
+              ).then((value) => 
+                {
+                  getData()
+                }
               );
             },
           ),
@@ -313,6 +321,10 @@ class ViewScreenState extends State<ViewScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => AddScreen(),)
+              ).then((value) => 
+                {
+                  getData()
+                }
               );
             },
           ),

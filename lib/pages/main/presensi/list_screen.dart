@@ -102,9 +102,9 @@ class _ListScreenState extends State<ListScreen> {
       if (val['api_status'] == 1) {
         setState(() {
           data = val['data'];
-          total_hari = val['kerja']['TOTAL_HARI'].toString();
-          hari_sebulan = val['kerja']['HARI_SEBULAN'].toString();
-          potongan = double.parse(val['kerja']['POTONGAN']);
+          total_hari = val['kerja'] != null ? val['kerja']['TOTAL_HARI'].toString() : '0';
+          hari_sebulan = val['kerja'] != null ? val['kerja']['HARI_SEBULAN'].toString() : '0';
+          potongan = val['kerja'] != null ? double.parse(val['kerja']['POTONGAN']) : 0;
           _isLoading =false;
         });
         // print(data);

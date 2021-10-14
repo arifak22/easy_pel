@@ -282,7 +282,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
-                      Text('Easy PEL - Versi Beta.1', 
+                      Text('Easy PEL - Versi 1.0.0', 
                         style: TextStyle(fontSize: 16)
                       ),
                       Text('Device - ' + _device, 

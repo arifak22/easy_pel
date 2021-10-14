@@ -69,7 +69,7 @@ class _MyAppState extends State<MyApp> {
     }
 
     _locationData = await location.getLocation();
-    location.enableBackgroundMode(enable: true);
+    location.enableBackgroundMode(enable: false);
   }
 
   @override

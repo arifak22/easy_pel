@@ -24,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children:  <Widget>[
             Expanded(
               flex: 1,
-              child: Text('Menu')
+              child: Container()
             ),
             Expanded(
               flex: 2,
