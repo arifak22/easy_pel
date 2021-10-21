@@ -117,9 +117,10 @@ class _AddScreenState extends State<AddScreen> {
         zoom  : 16
     )));
   }
-  void getWaktu() {
+  Future<void> getWaktu() async {
     if(!mounted) return;
-    Services().getApi('Waktu', 'zona=WIB').then((val) {
+    var zona_waktu    = await Services().getSession('zona_waktu');
+    Services().getApi('Waktu', 'zona=${zona_waktu}').then((val) {
       if (val['api_status'] == 1) {
         setState(() {
           waktuText = val['waktu_format'];

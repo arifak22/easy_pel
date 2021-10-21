@@ -1,0 +1,83 @@
+{
+  "project_info": {
+    "project_number": "255510511418",
+    "firebase_url": "https://easy-pel.firebaseio.com",
+    "project_id": "easy-pel",
+    "storage_bucket": "easy-pel.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:255510511418:android:875acb3d485947ee091a03",
+        "android_client_info": {
+          "package_name": "com.easypel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "255510511418-8qqpttmuq4ffjdvi2s0f7bpt5q8jvgac.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCExNENC8OcCzJu5y7T7sKR2yKwPDaA9Ug"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "255510511418-8qqpttmuq4ffjdvi2s0f7bpt5q8jvgac.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "255510511418-1dkvv0jkm8gjd3fmlv9b16ce6n54ior4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.easypel"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:255510511418:android:cbaa6324abc70714091a03",
+        "android_client_info": {
+          "package_name": "com.pel.easyPel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "255510511418-8qqpttmuq4ffjdvi2s0f7bpt5q8jvgac.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCExNENC8OcCzJu5y7T7sKR2yKwPDaA9Ug"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "255510511418-8qqpttmuq4ffjdvi2s0f7bpt5q8jvgac.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "255510511418-1dkvv0jkm8gjd3fmlv9b16ce6n54ior4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.easypel"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

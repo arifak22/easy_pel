@@ -2,6 +2,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_pel/helpers/color.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -42,7 +43,8 @@ class _LoginScreenState extends State<LoginScreen> {
     if (_formKey.currentState!.validate()) {
       pr.show();
       print('executeed');
-      Services().postLogin(usernameController.text, passwordController.text, _platformVersion, force).then((val) async {
+      String? token = await FirebaseMessaging.instance.getToken();
+      Services().postLogin(usernameController.text, passwordController.text, _platformVersion, token, force).then((val) async {
         pr.hide();
         if (val['api_status'] == 1) {
           // userProvider.add(val['nama'], val['nama_privilege']);
@@ -282,7 +284,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
-                      Text('Easy PEL - Versi 1.0.0', 
+                      Text('Easy PEL - Versi 1.0.1', 
                         style: TextStyle(fontSize: 16)
                       ),
                       Text('Device - ' + _device, 

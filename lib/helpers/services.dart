@@ -62,7 +62,7 @@ class Services {
   var uri;
   late String token;
 
-  Future postLogin(String username, String password, String deviceID, String force) async {
+  Future postLogin(String username, String password, String deviceID, String? fcm, String force) async {
     String url = '${baseUrl}/login/cek_loginv3';
     print(url);
     try {
@@ -72,6 +72,7 @@ class Services {
           'username': username,
           'password': password,
           'device'  : deviceID,
+          'token'   : fcm,
           'force'   : force
         },
       ).timeout(Duration(seconds: 10));
@@ -88,6 +89,7 @@ class Services {
           preferences.setString('position', json.encode(response['titik_absen']));
           preferences.setString('zona_waktu', response['titik_absen'][0]["ZONA_WAKTU"]);
           preferences.setString('temp', json.encode([]));
+          preferences.setString('fcm', fcm);
           print(response['titik_absen']);
           return response;
         } else {
@@ -148,7 +150,7 @@ class Services {
   Future postApi(String uri, Map<String, dynamic> body) async {
     preferences = await SharedPreferences.getInstance();
     token = preferences.getString('token')!;
-    body['token'] = token;
+    // body['token'] = token;
     List<Api> apiData = apiList.where((element) => element.name == uri).toList();
     var url = apiData[0].uri;
    // print('${baseUrl}/$url');
@@ -169,7 +171,7 @@ class Services {
         return jsonData;
       }
     } catch (e) {
-     // print(e);
+    //  print(e);
       jsonData = {
         'api_status': 0,
         'api_message': '$e',
