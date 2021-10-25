@@ -44,12 +44,18 @@ var apiList = [
   Api(apiID: 19, name: 'postHapusLampiran', uri:'presensi/hapus_lampiran'),
   Api(apiID: 19, name: 'postKirimAtasan', uri:'presensi/kirim_atasan'),
 
+  Api(apiID: 20, name: 'version', uri:'services/version'),
+
 
 ];
 
 
 isDebug() {
-  return false;
+  return true;
+}
+
+appVersion(){
+  return '1.0.1';
 }
 class Services {
   String baseUrl = isDebug() ?'http://localhost:8080/ci/api' :'https://imais.pel.co.id/ci/api';
@@ -63,7 +69,7 @@ class Services {
   late String token;
 
   Future postLogin(String username, String password, String deviceID, String? fcm, String force) async {
-    String url = '${baseUrl}/login/cek_loginv3';
+    String url = '${baseUrl}/login/cek_loginv4';
     print(url);
     try {
       res = await http.post(
@@ -73,7 +79,8 @@ class Services {
           'password': password,
           'device'  : deviceID,
           'token'   : fcm,
-          'force'   : force
+          'force'   : force,
+          'version' : appVersion()
         },
       ).timeout(Duration(seconds: 10));
       response = json.decode(res.body);
@@ -335,7 +342,7 @@ class Services {
 
   getSession(String name) async{
     preferences = await SharedPreferences.getInstance();
-    var result = preferences.getString(name);
+    var result = preferences.getString(name) ?? null;
     // print(result);
     return result;
   }

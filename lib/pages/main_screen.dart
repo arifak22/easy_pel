@@ -1,9 +1,11 @@
 
+import 'package:easy_pel/helpers/services.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_pel/helpers/color.dart';
 import 'package:easy_pel/pages/main/home_screen.dart';
 import 'package:easy_pel/pages/main/presensi/add_screen.dart';
 import 'package:easy_pel/pages/profile/view_screen.dart';
+import'dart:io' show Platform;
 
 class MainScreen extends StatefulWidget {
   @override
@@ -17,6 +19,75 @@ class _MainScreenState extends State<MainScreen> {
     ViewScreen(),
   ];
   int _currentIndex = 0;
+  @override
+  void initState() {
+    super.initState();
+    // Use either of them. 
+    Future(_showDialog);
+  }
+  String getPlatform() {
+    if (Platform.isIOS) {
+      return 'iOS_version';
+    } else if (Platform.isAndroid) {
+      return 'android_version';
+    } else if (Platform.isFuchsia) {
+      return 'Fuchsia';
+    } else if (Platform.isLinux) {
+      return 'Linux';
+    } else if (Platform.isMacOS) {
+      return 'MacOS';
+    } else if (Platform.isWindows) {
+      return 'Windows';
+    }
+    return '-';
+  }
+  void _showDialog() {
+    // flutter defined function
+    String platform = getPlatform();
+    String version  = appVersion();
+    Services().getApi('version', 'version=${version}&platform=${platform}').then((val) {
+      if (val['api_status'] == 1) {
+        if(val['update']){
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              // return object of type Dialog
+              return AlertDialog(
+                title: new Text("Update ke Versi ${val['version']}"),
+                content: SizedBox(
+                  width: double.maxFinite,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: val['update_message'].length,
+                    itemBuilder: (context, i){
+                      return Text('- ' + val['update_message'][i]);
+                    },
+                  ),
+                ),
+                actions: <Widget>[
+                  // usually buttons at the bottom of the dialog
+                  new FlatButton(
+                    child: new Text("Close"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        }
+      }else{
+        showDialog(context: context, builder: (_) =>AlertDialog(
+          title: Text('Something wrong'),
+          content: Text('${val['api_message']}'),
+          actions: <Widget>[ElevatedButton(onPressed: ()=>Navigator.pop(context), child: Text('Ok'))],
+        ));
+        print('gagal');
+      }
+      print(val);
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

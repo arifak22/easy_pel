@@ -71,8 +71,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _determinePosition();
-    
+    _determinePosition();    
   }
 
   Future<void> _determinePosition() async {
