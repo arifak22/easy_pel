@@ -93,7 +93,7 @@ class Services {
       if (res.statusCode == 200) {
         if (response['api_status'] == 1) {
           preferences = await SharedPreferences.getInstance();
-          preferences.setString('token', 'random');
+          preferences.setString('token', appVersion());
           preferences.setString('id', response['data']["USER_LOGIN_ID"]);
           preferences.setString('pegawai_id', response['data']["PEGAWAI_ID"]);
           preferences.setString('name', response['data']["NAMA"]);

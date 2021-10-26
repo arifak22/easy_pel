@@ -34,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void checkIsLoggedIn()async{
     preferences = await SharedPreferences.getInstance();
-    if (preferences.getString('token') != null) {
+    if (preferences.getString('token') == appVersion()) {
       Navigator.pushNamedAndRemoveUntil(context, '/splash-login', (Route route)=>false);
     }
   }

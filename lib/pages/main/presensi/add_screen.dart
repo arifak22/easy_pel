@@ -165,8 +165,9 @@ class _AddScreenState extends State<AddScreen> {
         'waktu'      : waktu,
         'jenis_absen': 'I',
         // 'foto'       : imgPath,
-        'latitude'   : _position.latitude.toString(),
-        'longitude'  : _position.longitude.toString(),
+        'version'  : appVersion(),
+        'latitude' : _position.latitude.toString(),
+        'longitude': _position.longitude.toString(),
       };
       Services().postApiFile('postPresensi', data, {'foto' : imgPath}).then((val) async {
         // print(val);
