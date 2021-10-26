@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_pel/pages/main/presensi/list_screen.dart' as Presensi;
 import 'package:easy_pel/pages/main/penghasilan/view_screen.dart' as Penghasilan;
 import 'package:easy_pel/pages/main/ketidakhadiran/view_screen.dart' as Ketidakhadiran;
+import 'package:easy_pel/pages/main/check/view_screen.dart' as Check;
 
 class Menu {
   int menuID;
@@ -25,4 +26,5 @@ var menuList = [
   Menu(menuID: 1, name: 'Presensi', imageAsset: 'lib/assets/icon/clock.png', description: 'Presensi', screen: Presensi.ListScreen()),
   Menu(menuID: 2, name: 'Penghasilan', imageAsset: 'lib/assets/icon/salary.png', description: 'Penghasilan', screen: Penghasilan.ViewScreen()),
   Menu(menuID: 3, name: 'Ketidakhadiran', imageAsset: 'lib/assets/icon/attendance.png', description: 'Ketidakhadiran', screen: Ketidakhadiran.ViewScreen()),
+  Menu(menuID: 4, name: 'Check App', imageAsset: 'lib/assets/icon/checking.png', description: 'Checking App', screen: Check.ViewScreen()),
 ];

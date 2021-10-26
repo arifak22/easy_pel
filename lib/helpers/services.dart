@@ -20,7 +20,7 @@ class Api {
 }
 
 var apiList = [
-  Api(apiID: 1, name: 'Login', uri:'login/cek_loginv3'),
+  Api(apiID: 1, name: 'Login', uri:'login/cek_loginv4'),
   Api(apiID: 2, name: 'Logout', uri:'login/logout'),
 
   Api(apiID: 3, name: 'Waktu', uri:'services/datetime'),
@@ -42,20 +42,25 @@ var apiList = [
   Api(apiID: 17, name: 'postHapusKetidakhadiran', uri:'presensi/hapus_ketidakhadiran'),
   Api(apiID: 18, name: 'postLampiran', uri:'presensi/tambah_lampiran'),
   Api(apiID: 19, name: 'postHapusLampiran', uri:'presensi/hapus_lampiran'),
-  Api(apiID: 19, name: 'postKirimAtasan', uri:'presensi/kirim_atasan'),
+  Api(apiID: 20, name: 'postKirimAtasan', uri:'presensi/kirim_atasan'),
 
-  Api(apiID: 20, name: 'version', uri:'services/version'),
+  Api(apiID: 21, name: 'version', uri:'services/version'),
 
+  Api(apiID: 22, name: 'getSelfcheck', uri:'selfcheck/datav2'),
+  Api(apiID: 23, name: 'getSoal', uri:'selfcheck/soal'),
+  Api(apiID: 24, name: 'postSelfcheck', uri:'selfcheck/jawaban'),
 
+  Api(apiID: 25, name: 'getLokasi', uri:'lokasi/datav2'),
+  Api(apiID: 26, name: 'postLokasi', uri:'lokasi/simpan'),
 ];
 
 
 isDebug() {
-  return true;
+  return false;
 }
 
 appVersion(){
-  return '1.0.1';
+  return '1.0.2';
 }
 class Services {
   String baseUrl = isDebug() ?'http://localhost:8080/ci/api' :'https://imais.pel.co.id/ci/api';
@@ -165,7 +170,7 @@ class Services {
     try {
       res = await http
           .post(Uri.parse('${baseUrl}/$url'),body: body).timeout(Duration(milliseconds: 10000));
-         // print(' body : ${res.body}');
+        //  print(' body : ${res.body}');
       if (res.statusCode == 200) {
         jsonData = json.decode(res.body);
         return jsonData;

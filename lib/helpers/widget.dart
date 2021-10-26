@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:easy_pel/helpers/color.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -102,7 +103,8 @@ class FormText extends StatefulWidget {
   final bool disabled;
   final dynamic validator;
   final TextEditingController? valueController;
-  FormText({Key? key, required this.label, this.initialValue, this.disabled = false, this.validator, this.valueController}) : super(key: key);
+  final TextInputType? keyboardType;
+  FormText({Key? key, required this.label, this.initialValue, this.disabled = false, this.validator, this.valueController, this.keyboardType}) : super(key: key);
 
   @override
   State<FormText> createState() => FormTextState();
@@ -123,12 +125,13 @@ class FormTextState extends State<FormText> {
         initialValue: widget.initialValue,
         enabled: !widget.disabled,
         controller: widget.valueController,
+        keyboardType: widget.keyboardType,
         // validator: RequiredValidator(errorText: 'this field is required'),
         onEditingComplete: () => FocusScope.of(context).nextFocus(),
         validator: (val){
-          if (val!.isEmpty) {
-            return '${widget.label} is empty';
-          }
+          // if (val!.isEmpty) {
+          //   return '${widget.label} is empty';
+          // }
           return null;
         },
       ),
