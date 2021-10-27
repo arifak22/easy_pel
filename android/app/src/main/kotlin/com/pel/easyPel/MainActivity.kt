@@ -1,4 +1,4 @@
-package com.example.easy_pel
+package com.pel.easyPel
 
 import io.flutter.embedding.android.FlutterActivity
 
