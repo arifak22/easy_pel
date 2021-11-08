@@ -1,5 +1,6 @@
 
 import 'package:easy_pel/helpers/services.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_pel/helpers/color.dart';
 import 'package:easy_pel/pages/main/home_screen.dart';
@@ -13,6 +14,9 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  // It is assumed that all messages contain a data field with the key 'type'
+  
+
   final List<Widget> _children = [
     HomeScreen(),
     AddScreen(),

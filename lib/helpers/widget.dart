@@ -66,7 +66,7 @@ String toNumberRupiah(value){
 double dateToDouble(value){
   return double.parse(value.replaceAll('-', ''));
 }
-EdgeInsetsGeometry FormMargin = EdgeInsets.only(top: 10);
+EdgeInsetsGeometry FormMargin = EdgeInsets.only(top: 5);
 
 class FormLoading extends StatefulWidget {
   final String label;
@@ -86,7 +86,7 @@ class FormLoadingState extends State<FormLoading> {
       child: new TextFormField(
         decoration: InputDecoration(
           labelText: widget.label,
-          contentPadding: EdgeInsets.all(10),
+          contentPadding: EdgeInsets.all(5),
           suffixIcon: Icon(MdiIcons.loading)
         ),
         initialValue: 'Loading ....',
@@ -104,7 +104,8 @@ class FormText extends StatefulWidget {
   final dynamic validator;
   final TextEditingController? valueController;
   final TextInputType? keyboardType;
-  FormText({Key? key, required this.label, this.initialValue, this.disabled = false, this.validator, this.valueController, this.keyboardType}) : super(key: key);
+  final bool isLoading;
+  FormText({Key? key, required this.label, this.initialValue, this.disabled = false, this.validator, this.valueController, this.keyboardType, this.isLoading = false}) : super(key: key);
 
   @override
   State<FormText> createState() => FormTextState();
@@ -115,27 +116,31 @@ class FormTextState extends State<FormText> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: FormMargin,
-      child: new TextFormField(
-        decoration: InputDecoration(
-          labelText: widget.label,
-          contentPadding: EdgeInsets.all(10),
+    if(widget.isLoading){
+      return FormLoading(label: widget.label);
+    }else{
+      return Container(
+        margin: FormMargin,
+        child: new TextFormField(
+          decoration: InputDecoration(
+            labelText: widget.label,
+            contentPadding: EdgeInsets.all(5),
+          ),
+          initialValue: widget.initialValue,
+          enabled: !widget.disabled,
+          controller: widget.valueController,
+          keyboardType: widget.keyboardType,
+          // validator: RequiredValidator(errorText: 'this field is required'),
+          onEditingComplete: () => FocusScope.of(context).nextFocus(),
+          validator: (val){
+            // if (val!.isEmpty) {
+            //   return '${widget.label} is empty';
+            // }
+            return null;
+          },
         ),
-        initialValue: widget.initialValue,
-        enabled: !widget.disabled,
-        controller: widget.valueController,
-        keyboardType: widget.keyboardType,
-        // validator: RequiredValidator(errorText: 'this field is required'),
-        onEditingComplete: () => FocusScope.of(context).nextFocus(),
-        validator: (val){
-          // if (val!.isEmpty) {
-          //   return '${widget.label} is empty';
-          // }
-          return null;
-        },
-      ),
-    );
+      );
+    }
   }
 }
 
@@ -216,7 +221,7 @@ class _FormSelectState extends State<_FormSelect> {
       child: new TextFormField(
         decoration: InputDecoration(
           labelText: widget.label,
-          contentPadding: EdgeInsets.all(10),
+          contentPadding: EdgeInsets.all(5),
           suffixIcon: Icon(MdiIcons.panDown)
         ),
         readOnly: true,
@@ -307,19 +312,47 @@ class _FormSelectState extends State<_FormSelect> {
     );
   }
 }
+class FormDate extends StatefulWidget{
 
-class FormDate extends StatefulWidget {
   final String label;
   final bool disabled;
   final dynamic validator;
   final TextEditingController valueController;
-  FormDate({Key? key, required this.label, this.disabled = false, this.validator, required this.valueController}) : super(key: key);
+  final bool isLoading;
+  FormDate({Key? key, required this.label, this.disabled = false, this.validator, required this.valueController, this.isLoading = false}) : super(key: key);
 
   @override
-  State<FormDate> createState() => FormDateState();
+  State<FormDate> createState() => _FormDateState();
 }
 
-class FormDateState extends State<FormDate> {
+class _FormDateState extends State<FormDate> {
+  @override
+  Widget build(BuildContext context) {
+    if(widget.isLoading){
+      return FormLoading(label: widget.label);
+    }else{
+      return FormDate2(
+        label          : widget.label,
+        disabled       : widget.disabled,
+        validator      : widget.validator,
+        valueController: widget.valueController,
+      );
+    }
+  }
+}
+class FormDate2 extends StatefulWidget {
+  final String label;
+  final bool disabled;
+  final dynamic validator;
+  final TextEditingController valueController;
+  FormDate2({Key? key, required this.label, this.disabled = false, this.validator, required this.valueController}) : super(key: key);
+
+  @override
+  State<FormDate2> createState() => FormDate2State();
+}
+
+
+class FormDate2State extends State<FormDate2> {
 
   TextEditingController get _effectiveController => widget.valueController;
   TextEditingController textController = TextEditingController();
@@ -329,8 +362,8 @@ class FormDateState extends State<FormDate> {
     final DateTime? picked = await showDatePicker(
       context    : context,
       initialDate: new DateFormat("y-MM-d").parse(widget.valueController.text),   // Refer step 1
-      firstDate  : DateTime(2000),
-      lastDate   : DateTime(2025),
+      firstDate  : DateTime(1800),
+      lastDate   : DateTime(2045),
     );
     if (picked != null && picked != new DateFormat("y-MM-dd").parse(widget.valueController.text))
       setState(() {
@@ -356,7 +389,7 @@ class FormDateState extends State<FormDate> {
       child: new TextFormField(
         decoration: InputDecoration(
           labelText: widget.label,
-          contentPadding: EdgeInsets.all(10),
+          contentPadding: EdgeInsets.all(5),
           suffixIcon: Icon(MdiIcons.calendar)
         ),
         readOnly: true,

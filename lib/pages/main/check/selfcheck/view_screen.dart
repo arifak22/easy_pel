@@ -115,6 +115,7 @@ class ViewScreenState extends State<ViewScreen> {
       }else{
         setState(() {
           data = [];
+          showTambah = val['found'] == 0 ? true : false;
           _isLoading =false;
         });
       }

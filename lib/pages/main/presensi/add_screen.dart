@@ -310,91 +310,87 @@ class _AddScreenState extends State<AddScreen> {
                         child: Text(waktuText, 
                           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
                       ),
-                      Column(
-                        children: <Widget>[
-                          AspectRatio(
-                            aspectRatio: 1,
-                            child: Container(
-                              width: double.infinity,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(30),
-                                  topRight: Radius.circular(30),
-                                  bottomRight: Radius.circular(30),
-                                  bottomLeft: Radius.circular(30),
-                                ),
-
-                                child: Align(
-                                  alignment: Alignment.bottomRight,
-                                  heightFactor: 0.3,
-                                  widthFactor: 2.5,
-                                  child: GoogleMap(
-                                    mapType: MapType.normal,
-                                    circles: circles,
-                                    initialCameraPosition: currentPostion,
-                                    markers: Set<Marker>.of(markers.values),
-                                    
-                                    onMapCreated: (GoogleMapController controller) {
-                                      _controller.complete(controller);
-                                    },
+                      Container(
+                        width: double.infinity,
+                        // width: 100,
+                        height: (MediaQuery.of(context).size.width - 100) < (MediaQuery.of(context).size.height - 520) ? MediaQuery.of(context).size.width - 100 : MediaQuery.of(context).size.height - 520,
+                        // height: double.infinity,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(30),
+                            topRight: Radius.circular(30),
+                            bottomRight: Radius.circular(30),
+                            bottomLeft: Radius.circular(30),
+                          ),
+                
+                          child: Align(
+                            alignment: Alignment.bottomRight,
+                            // heightFactor: 0.3,
+                            // widthFactor: 2.5,
+                            child: GoogleMap(
+                              mapType: MapType.normal,
+                              circles: circles,
+                              initialCameraPosition: currentPostion,
+                              markers: Set<Marker>.of(markers.values),
+                              
+                              onMapCreated: (GoogleMapController controller) {
+                                _controller.complete(controller);
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: () async {
+                          // print(_position);
+                          if(isTrue){
+                            var result = await Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => CameraScreen(),)
+                            );
+                            result = result == null ? '' : result;
+                            setState(() {
+                              imgPath = result;
+                            });
+                            print(imgPath);
+                          }else{
+                            showDialog(context: context, builder: (_) =>AlertDialog(
+                              title: Text('Info'),
+                              content: Text('Maaf, anda belum berada di lokasi presensi'),
+                              actions: <Widget>[
+                                  ElevatedButton(
+                                    onPressed: ()=> {
+                                      Navigator.pop(context),
+                                    }, child: Text('Close'),
                                   ),
+                                ],
+                            ));
+                          }
+                        },
+                        child: Icon(isTrue ? imgPath != ''? MdiIcons.cameraRetake : MdiIcons.camera : MdiIcons.cameraOff, color: Colors.white, size: 30,),
+                        style: ElevatedButton.styleFrom(
+                          shape: CircleBorder(),
+                          padding: EdgeInsets.all(13),
+                          primary: isTrue ? MyColor('primary') : HexColor('#ba2214'),
+                          onPrimary: Colors.black,
+                        ),
+                      ),
+                      imgPath != '' ? InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => PreviewScreen(
+                                  // Pass the automatically generated path to
+                                  // the DisplayPictureScreen widget.
+                                  imgPath: imgPath,
+                                  fileName: 'test',
+                                  isPreview: true,
                                 ),
                               ),
-                            ),
-                          ),
-                          ElevatedButton(
-                            onPressed: () async {
-                              // print(_position);
-                              if(isTrue){
-                                var result = await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => CameraScreen(),)
-                                );
-                                result = result == null ? '' : result;
-                                setState(() {
-                                  imgPath = result;
-                                });
-                                print(imgPath);
-                              }else{
-                                showDialog(context: context, builder: (_) =>AlertDialog(
-                                  title: Text('Info'),
-                                  content: Text('Maaf, anda belum berada di lokasi presensi'),
-                                  actions: <Widget>[
-                                      ElevatedButton(
-                                        onPressed: ()=> {
-                                          Navigator.pop(context),
-                                        }, child: Text('Close'),
-                                      ),
-                                    ],
-                                ));
-                              }
-                            },
-                            child: Icon(isTrue ? imgPath != ''? MdiIcons.cameraRetake : MdiIcons.camera : MdiIcons.cameraOff, color: Colors.white, size: 30,),
-                            style: ElevatedButton.styleFrom(
-                              shape: CircleBorder(),
-                              padding: EdgeInsets.all(13),
-                              primary: isTrue ? MyColor('primary') : HexColor('#ba2214'),
-                              onPrimary: Colors.black,
-                            ),
-                          ),
-                          imgPath != '' ? InkWell(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => PreviewScreen(
-                                      // Pass the automatically generated path to
-                                      // the DisplayPictureScreen widget.
-                                      imgPath: imgPath,
-                                      fileName: 'test',
-                                      isPreview: true,
-                                    ),
-                                  ),
-                                );
-                            },
-                            child: new Text("Lihat Foto"),
-                          ) : Text('')
-                        ],
-                      ),
+                            );
+                        },
+                        child: new Text("Lihat Foto"),
+                      ) : Text(''),
                     ],
                   ),
                 ),

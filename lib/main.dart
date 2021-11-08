@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:easy_pel/helpers/services.dart';
+import 'package:easy_pel/notification_handle.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_pel/helpers/color.dart';
 import 'package:easy_pel/pages/main_splash_screen.dart';
@@ -67,11 +68,35 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey(debugLabel: "Main Navigator");
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _determinePosition();    
+    _determinePosition();  
+    setupInteractedMessage();
+  }
+  Future<void> setupInteractedMessage() async {
+    // Get any messages which caused the application to open from
+    // a terminated state.
+    RemoteMessage? initialMessage =
+        await FirebaseMessaging.instance.getInitialMessage();
+
+    // If the message also contains a data property with a "type" of "chat",
+    // navigate to a chat screen
+    if (initialMessage != null) {
+      _handleMessage(initialMessage);
+    }
+
+    // Also handle any interaction when the app is in the background via a
+    // Stream listener
+    FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
+  }
+  
+  void _handleMessage(RemoteMessage message) async{
+    var data = message.data;
+    handleNotif(data, navigatorKey.currentState!.context);
   }
 
   Future<void> _determinePosition() async {
@@ -107,6 +132,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title                     : 'Easy PEL',
       // debugShowMaterialGrid     : isDebug(),
+      navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: isDebug(),
       theme                     : ThemeData(
         scaffoldBackgroundColor: MyColor('bg'),

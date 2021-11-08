@@ -18,7 +18,8 @@ class MyColor extends Color {
   static int _getColorFromHex(String type) {
     String hexColor = '#FFFFFF';
     if(type == 'primary'){
-      hexColor = '#00599D';
+      // hexColor = '#00599D';
+      hexColor = '#0280bf';
     }else if(type == 'default'){
       hexColor = '#FFFFFF';
     }else if(type == 'bg'){

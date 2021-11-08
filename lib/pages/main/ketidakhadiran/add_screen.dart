@@ -229,18 +229,21 @@ class AddScreenState extends State<AddScreen> {
                           option         : optionIjinPenting,
                           valueController: valueIjinPenting,
                         ) : Container(),
-                        _isReady ? FormDate(
+                        FormDate(
                           label          : 'Tanggal Awal',
                           valueController: valueTglAwal,
-                        ) : Container(),
-                        _isReady ? FormDate(
+                          isLoading      : !_isReady,
+                        ),
+                        FormDate(
                           label          : 'Tanggal Akhir',
-                          valueController: valueTglAkhir
-                        ) : Container(),
-                        _isReady ? FormText(
+                          valueController: valueTglAkhir,
+                          isLoading: !_isReady,
+                        ),
+                        FormText(
                           label          : 'Keterangan',
                           valueController: valueKeterangan,
-                        ) : Container(),
+                          isLoading      : !_isReady,
+                        ),
                         FormSelect(
                           label          : 'Persetujuan Atasan',
                           option         : optionAtasan,

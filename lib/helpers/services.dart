@@ -52,6 +52,12 @@ var apiList = [
 
   Api(apiID: 25, name: 'getLokasi', uri:'lokasi/datav2'),
   Api(apiID: 26, name: 'postLokasi', uri:'lokasi/simpan'),
+  Api(apiID: 27, name: 'getFoto', uri:'profile/foto'),
+  Api(apiID: 28, name: 'getProfile', uri:'profile/data'),
+
+  Api(apiID: 29, name: 'getBank', uri:'profile/bank'),
+  Api(apiID: 30, name: 'getJabatan', uri:'profile/jabatan'),
+  Api(apiID: 31, name: 'getHukuman', uri:'profile/hukuman'),
 ];
 
 
@@ -60,7 +66,15 @@ isDebug() {
 }
 
 appVersion(){
-  return '1.0.2';
+  return '1.0.3';
+}
+
+  
+urlAPi(String uri, {String param = ''}){
+  List<Api> apiData = apiList.where((element) => element.name == uri).toList();
+  var url = apiData[0].uri;
+  String baseUrl = isDebug() ?'http://localhost:8080/ci/api' :'https://imais.pel.co.id/ci/api';
+  return baseUrl + '/' + url + param;
 }
 class Services {
   String baseUrl = isDebug() ?'http://localhost:8080/ci/api' :'https://imais.pel.co.id/ci/api';

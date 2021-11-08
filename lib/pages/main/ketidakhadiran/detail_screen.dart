@@ -19,7 +19,7 @@ class DetailScreen extends StatefulWidget {
   String id;
   String pegawai_id;
   String jenis;
-  DetailScreen({required this.id, required this.pegawai_id, required this.jenis});
+  DetailScreen({required this.id, this.pegawai_id = '', required this.jenis});
   @override
   State<DetailScreen> createState() => DetailScreenState(id, pegawai_id, jenis);
 }
