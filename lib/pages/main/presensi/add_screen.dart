@@ -30,6 +30,7 @@ class _AddScreenState extends State<AddScreen> {
   Completer<GoogleMapController> _controller = Completer();
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{}; // CLASS MEMBER, MAP OF MARKS
   late Timer _timer;
+  bool cameraOn = true;
   //Init Variable
   late Position _position;
   CameraPosition currentPostion = CameraPosition(
@@ -39,6 +40,7 @@ class _AddScreenState extends State<AddScreen> {
 
   late bool isTrue = false;
   late bool _isLoading = false;
+  late bool inProses = false;
   String waktuText = DateFormat('d MMMM y - hh:mm:ss', 'id_ID').format(DateTime.now());
   String waktu = DateFormat('y-m-d hh:mm:ss').format(DateTime.now());
   double radius = 1000.00;
@@ -56,6 +58,9 @@ class _AddScreenState extends State<AddScreen> {
 
   void _add() async{
     if(!mounted) return;
+    setState(() {
+      inProses = true;
+    });
     var validDistance = false;
     Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     
@@ -80,7 +85,7 @@ class _AddScreenState extends State<AddScreen> {
       if(_distanceInMeters <= radius){
         validDistance = validDistance || true;
       }else{
-        validDistance = validDistance|| false;
+        validDistance = validDistance || false;
       }
 
       i++;
@@ -116,6 +121,11 @@ class _AddScreenState extends State<AddScreen> {
       target: LatLng(position.latitude, position.longitude),
         zoom  : 16
     )));
+
+
+    setState(() {
+      inProses = false;
+    });
   }
   Future<void> getWaktu() async {
     if(!mounted) return;
@@ -340,40 +350,60 @@ class _AddScreenState extends State<AddScreen> {
                           ),
                         ),
                       ),
-                      ElevatedButton(
-                        onPressed: () async {
-                          // print(_position);
-                          if(isTrue){
-                            var result = await Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => CameraScreen(),)
-                            );
-                            result = result == null ? '' : result;
-                            setState(() {
-                              imgPath = result;
-                            });
-                            print(imgPath);
-                          }else{
-                            showDialog(context: context, builder: (_) =>AlertDialog(
-                              title: Text('Info'),
-                              content: Text('Maaf, anda belum berada di lokasi presensi'),
-                              actions: <Widget>[
-                                  ElevatedButton(
-                                    onPressed: ()=> {
-                                      Navigator.pop(context),
-                                    }, child: Text('Close'),
-                                  ),
-                                ],
-                            ));
-                          }
-                        },
-                        child: Icon(isTrue ? imgPath != ''? MdiIcons.cameraRetake : MdiIcons.camera : MdiIcons.cameraOff, color: Colors.white, size: 30,),
-                        style: ElevatedButton.styleFrom(
-                          shape: CircleBorder(),
-                          padding: EdgeInsets.all(13),
-                          primary: isTrue ? MyColor('primary') : HexColor('#ba2214'),
-                          onPrimary: Colors.black,
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        // crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          !isTrue ? Container() : ElevatedButton(
+                            onPressed: () async {
+                              // print(_position);
+                              if(isTrue){
+                                var result = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => CameraScreen(),)
+                                );
+                                result = result == null ? '' : result;
+                                setState(() {
+                                  imgPath = result;
+                                });
+                                // -7.209852086759332, 112.72618840104431
+                                print(imgPath);
+                              }else{
+                                showDialog(context: context, builder: (_) =>AlertDialog(
+                                  title: Text('Info'),
+                                  content: Text('Maaf, anda belum berada di lokasi presensi'),
+                                  actions: <Widget>[
+                                      ElevatedButton(
+                                        onPressed: ()=> {
+                                          Navigator.pop(context),
+                                        }, child: Text('Close'),
+                                      ),
+                                    ],
+                                ));
+                              }
+                            },
+                            child: Icon(isTrue ? imgPath != ''? MdiIcons.cameraRetake : MdiIcons.camera : MdiIcons.cameraOff, color: Colors.white, size: 30,),
+                            style: ElevatedButton.styleFrom(
+                              shape: CircleBorder(),
+                              padding: EdgeInsets.all(13),
+                              primary: isTrue ? MyColor('primary') : HexColor('#ba2214'),
+                              onPrimary: Colors.black,
+                            ),
+                          ),
+                          isTrue ? Container() :
+                          ElevatedButton(
+                            onPressed: !inProses ? () async {
+                                this._add();
+                            } : null,
+                            child: Icon(MdiIcons.reload, color: Colors.white, size: 30,),
+                            style: ElevatedButton.styleFrom(
+                              shape: CircleBorder(),
+                              padding: EdgeInsets.all(13),
+                              primary: Colors.yellow.shade700,
+                              onPrimary: Colors.black,
+                            ),
+                          ),
+                        ],
                       ),
                       imgPath != '' ? InkWell(
                         onTap: () {

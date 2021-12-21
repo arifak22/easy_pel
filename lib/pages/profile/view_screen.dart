@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:easy_pel/helpers/color.dart';
 import 'package:easy_pel/pages/profile/detail_screen.dart';
 import 'package:easy_pel/pages/profile/hukuman_screen.dart';
@@ -13,32 +15,30 @@ class ViewScreen extends StatefulWidget {
 }
 class ViewScreenState extends State<ViewScreen> {
   late ProgressDialog pr;
-  String pId           = '0';
-  String nama          = 'Pelindo Energi Logistik';
-  String jabatan       = '-';
-  String cuti_full     = '-';
-  String cuti_setengah = '-';
-  String cuti_besar    = '-';
-  bool isReady = false;
-  dynamic data = [];
+  String  pId              = '0';
+  String  nama             = 'Pelindo Energi Logistik';
+  String  jabatan          = '-';
+  String  cuti_full        = '-';
+  String  cuti_setengah    = '-';
+  String  cuti_besar       = '-';
+  int     status           = 0;
+  int     status_pengajuan = -9;
+  bool    isReady          = false;
+  dynamic data             = [];
+  String randomFoto = '';
   Future<void> submitLogout() async {
     pr.show();
     var fcm    = await Services().getSession('fcm');
-    print(fcm);
-    // return;
     var data = {
       'token'             : fcm,
     };
     Services().postApi('Logout', data).then((val) async {
       pr.hide();
-      // print(val);
       if (val['api_status'] == 1) {
-        print(val);
         SharedPreferences preferences = await SharedPreferences.getInstance();
         preferences.clear();
         Navigator.pushNamedAndRemoveUntil(context, '/', (Route route)=>false);
       }else{
-        print(val);
         showDialog(context: context, builder: (_) =>AlertDialog(
           title: Text('Something wrong'),
           content: Text('${val['api_message']}'),
@@ -59,19 +59,25 @@ class ViewScreenState extends State<ViewScreen> {
     if(!mounted) return;
     var pegawai_id = await Services().getSession('pegawai_id');
     var toNama = await Services().getSession('name');
+    var rand = await Services().getSession('foto');
+    setState(() {
+      randomFoto = rand;
+    });
     Services().getApi('getProfile', "pegawai_id=${pegawai_id}").then((val) {
       if (val['api_status'] == 1) {
-        print(val['data']);
         setState(() {
-          nama          = toNama;
-          pId           = pegawai_id;
-          jabatan       = val['data']['JABATAN'];
-          data          = val['data'];
-          cuti_full     = val['cuti']['cuti_full'];
-          cuti_setengah = val['cuti']['cuti_setengah'];
-          cuti_besar    = val['cuti']['cuti_besar'] ?? '0';
-          isReady       = true;
+          nama             = toNama;
+          pId              = pegawai_id;
+          jabatan          = val['data']['JABATAN'];
+          data             = val['data'];
+          status           = val['status'];
+          status_pengajuan = val['status_pengajuan'];
+          cuti_full        = val['cuti']['cuti_full'];
+          cuti_setengah    = val['cuti']['cuti_setengah'];
+          cuti_besar       = val['cuti']['cuti_besar'] ?? '0';
+          isReady          = true;
         });
+        // print(status_pengajuan);
       }else{
         setState(() {
           nama    = toNama;
@@ -106,11 +112,16 @@ class ViewScreenState extends State<ViewScreen> {
       );
   }
   
-  Widget ListMenu(icon, title, screen){
+  Widget ListMenu(icon, title, screen, refresh){
     return InkWell(
       onTap: (){
         if(isReady){
-          Navigator.push(context, MaterialPageRoute(builder: (context) => screen ));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => screen )).then((value) => 
+            {
+              if(refresh)
+              getData()
+            }
+          );
         }
       },
       child: Container(
@@ -163,7 +174,6 @@ class ViewScreenState extends State<ViewScreen> {
     final double fillPercent = 70.00; // fills 56.23% for container from bottom
     final double fillStop = (100 - fillPercent) / 100;
     final List<double> stops = [0.0, fillStop, fillStop, 1.0];
-
     return new Scaffold(
       body: Container(
         width: double.infinity,
@@ -186,15 +196,18 @@ class ViewScreenState extends State<ViewScreen> {
                     width: double.infinity,
                     child: Row(
                       children: [
-                        CircleAvatar(
-                          radius: 30,
-                          backgroundColor: Colors.white,
-                          child: ClipOval(
-                            child: Image.network(
-                              pId != '0' ? urlAPi("getFoto", param: '?pegawai_id=${pId}') : urlAPi("getFoto"),
-                              fit: BoxFit.cover,
-                              width: 55,
-                              height: 55,
+                        Hero(
+                          tag: 1,
+                          child: CircleAvatar(
+                            radius: 30,
+                            backgroundColor: Colors.white,
+                            child: ClipOval(
+                              child: Image.network(
+                                pId != '0' ? urlAPi("getFoto", param: '?pegawai_id=${pId}&number=${randomFoto}') : urlAPi("getFoto"),
+                                fit: BoxFit.cover,
+                                width: 55,
+                                height: 55,
+                              ),
                             ),
                           ),
                         ),
@@ -262,10 +275,10 @@ class ViewScreenState extends State<ViewScreen> {
                           margin: EdgeInsets.only(left: 30, right: 30, top: 10),
                           child: Column(
                             children: [
-                              ListMenu(Icons.document_scanner, 'Data Diri', DetailScreen(data: data)),
+                              ListMenu(Icons.document_scanner, 'Data Diri', DetailScreen(data: data, status:status, statusPengajuan: status_pengajuan), true),
                               // ListMenu(Icons.drive_folder_upload_rounded, 'Dokumen'),
-                              ListMenu(Icons.badge_sharp, 'Histori Jabatan', JabatanScreen()),
-                              ListMenu(Icons.assistant_photo, 'Hukuman', HukumanScreen()),
+                              ListMenu(Icons.badge_sharp, 'Histori Jabatan', JabatanScreen(), false),
+                              ListMenu(Icons.assistant_photo, 'Hukuman', HukumanScreen(), false),
                             ],
                           ),
                         )

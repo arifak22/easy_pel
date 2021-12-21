@@ -55,9 +55,18 @@ var apiList = [
   Api(apiID: 27, name: 'getFoto', uri:'profile/foto'),
   Api(apiID: 28, name: 'getProfile', uri:'profile/data'),
 
+
   Api(apiID: 29, name: 'getBank', uri:'profile/bank'),
   Api(apiID: 30, name: 'getJabatan', uri:'profile/jabatan'),
   Api(apiID: 31, name: 'getHukuman', uri:'profile/hukuman'),
+
+  Api(apiID: 32, name: 'getFotoPresensi', uri:'presensi/foto'),
+
+  Api(apiID: 33, name: 'postProfile', uri:'profile/simpan'),
+  Api(apiID: 34, name: 'postKirimProfile', uri:'profile/kirim'),
+  Api(apiID: 35, name: 'postFotoProfile', uri:'profile/foto_change'),
+
+
 ];
 
 
@@ -66,18 +75,25 @@ isDebug() {
 }
 
 appVersion(){
-  return '1.0.3';
+  return '1.0.4';
+}
+
+localServer(){
+  var local = 'http://10.73.251.7:8080/ci/api';
+  // var local = 'http://localhost:8080/ci/api';
+  return local;
 }
 
   
 urlAPi(String uri, {String param = ''}){
   List<Api> apiData = apiList.where((element) => element.name == uri).toList();
   var url = apiData[0].uri;
-  String baseUrl = isDebug() ?'http://localhost:8080/ci/api' :'https://imais.pel.co.id/ci/api';
+  String baseUrl = isDebug() ? localServer() :'https://imais.pel.co.id/ci/api';
+  // print(baseUrl + '/' + url + param);
   return baseUrl + '/' + url + param;
 }
 class Services {
-  String baseUrl = isDebug() ?'http://localhost:8080/ci/api' :'https://imais.pel.co.id/ci/api';
+  String baseUrl = isDebug() ? localServer() :'https://imais.pel.co.id/ci/api';
 
   late SharedPreferences preferences;
   var res, jsonData;

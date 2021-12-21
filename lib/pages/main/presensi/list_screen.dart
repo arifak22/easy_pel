@@ -1,4 +1,5 @@
 import 'package:easy_pel/helpers/services.dart';
+import 'package:easy_pel/pages/main/presensi/detail_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_pel/helpers/color.dart';
@@ -8,7 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 
 
-Widget listPresensi(dynamic data){
+Widget listPresensi(dynamic data, dynamic context){
   MaterialColor _color = Colors.green;
 
   if(data['COLOR'] == 'primary'){
@@ -18,59 +19,64 @@ Widget listPresensi(dynamic data){
   }else if(data['COLOR'] == 'warning'){
     _color = Colors.yellow;
   }
-  return Container(
-    width  : double.infinity,
-    margin : EdgeInsets.only(bottom: 20, left: 20, right: 20),
-    padding: EdgeInsets.all(20),
-    decoration: BoxDecoration(
-      color: HexColor('#FFFFFF'),
-      // borderRadius: BorderRadius.all(Radius.circular(5)),
-      border: Border(
-        left: BorderSide(color: _color, width: 4),
-
+  return InkWell(
+    onTap: (){
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => DetailScreen(data: data))
+      );
+    },
+    child: Container(
+      width  : double.infinity,
+      margin : EdgeInsets.only(bottom: 20, left: 20, right: 20),
+      padding: EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: HexColor('#FFFFFF'),
+        // borderRadius: BorderRadius.all(Radius.circular(5)),
+        border: Border(
+          left: BorderSide(color: _color, width: 4),
+  
+        ),
       ),
-      // borderRadius: BorderRadius.only(topLeft: Radius.circular(5))
-    ),
-    child: Row(
-      // mainAxisAlignment: MainAxisAlignment.center,
-      // crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: <Widget>[
-        Expanded(
-          flex: 1,
-          child: Container(
-            alignment: Alignment.center,
-            child: Text(data['STATUS'], 
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 15, 
-                color: _color, 
-                background: Paint()..color = MyColor('bg')
-                ..strokeWidth = 10
-                ..style = PaintingStyle.stroke,
-              ),
-            ),
-          )
-        ),
-        Expanded(
-          flex: 2,
-          child: Container(
-            alignment: Alignment.center,
-            child: Column(
-              children: <Widget>[
-                Text(data['TANGGAL_INDO'], 
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          Expanded(
+            flex: 1,
+            child: Container(
+              alignment: Alignment.center,
+              child: Text(data['STATUS'], 
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 15, 
+                  color: _color, 
+                  background: Paint()..color = MyColor('bg')
+                  ..strokeWidth = 10
+                  ..style = PaintingStyle.stroke,
                 ),
-                Padding(
-                  padding: EdgeInsets.only(top: 5),
-                  child:  Text('${data["IN"]} s/d ${data["OUT"]}')
-                )
-              ],
+              ),
             )
-          )
-        ),
-      ],
-    )
+          ),
+          Expanded(
+            flex: 2,
+            child: Container(
+              alignment: Alignment.center,
+              child: Column(
+                children: <Widget>[
+                  Text(data['TANGGAL_INDO'], 
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 5),
+                    child:  Text('${data["IN"]} s/d ${data["OUT"]}')
+                  )
+                ],
+              )
+            )
+          ),
+        ],
+      )
+    ),
   );
 }                
 class ListScreen extends StatefulWidget {
@@ -259,7 +265,7 @@ class _ListScreenState extends State<ListScreen> {
                     // controller: _scrollController,
                       itemBuilder: (context, i){
                         // print(data[i]);
-                        return listPresensi(data[i]);
+                        return listPresensi(data[i], context);
                       },
                   ),
                 ),

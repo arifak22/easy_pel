@@ -1,4 +1,5 @@
 
+import 'package:easy_pel/helpers/services.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_pel/helpers/color.dart';
 import 'package:easy_pel/pages/main/presensi/add_screen.dart';
@@ -20,11 +21,24 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: appBar('Beranda'),
       body: Container(
         child: Column(
-
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.end,
           children:  <Widget>[
             Expanded(
               flex: 1,
-              child: Container()
+              child: Container(
+                margin: EdgeInsets.only(left: 15, right: 15),
+                child: Row(
+                  children: [
+                    Container(
+                      color: Colors.white,
+                      width: 300,
+                      height: 150,
+                      child: Text(''),
+                    )
+                  ],
+                ),
+              )
             ),
             Expanded(
               flex: 2,
@@ -82,6 +96,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 )
               ),
             ),
+            Container(
+              margin: EdgeInsets.only(bottom: 5, right: 20),
+              child: Text('Versi ${appVersion()}')
+            )
             // Expanded(
             //   flex: 1,
             //   child: Text('')

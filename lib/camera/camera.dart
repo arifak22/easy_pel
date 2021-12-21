@@ -154,6 +154,7 @@ class _CameraScreenState extends State<CameraScreen> {
         // print(result);
         if(result != null){
           Navigator.pop(context, result);
+          cameraController!.dispose();
         }
 
     } catch (e) {
@@ -187,6 +188,12 @@ class _CameraScreenState extends State<CameraScreen> {
     }).catchError((e){
       print('Error : ${e.code}');
     });
+  }
+
+  @override
+  void dispose() {
+    cameraController!.dispose();
+    super.dispose();
   }
 
   @override
