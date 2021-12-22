@@ -87,6 +87,10 @@ class ViewScreenState extends State<ViewScreen> {
     });
   }
   Widget RoundCuti(color, jumlah, title){
+    double fSize = 20;
+    if (jumlah.length > 3){
+      fSize = 11;
+    }
     return 
       Column(
         children: [
@@ -103,7 +107,7 @@ class ViewScreenState extends State<ViewScreen> {
               width : 50,
               height: 50,
               child : Center(
-                child: Text(jumlah, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))
+                child: Text(jumlah, style: TextStyle(fontSize: fSize, fontWeight: FontWeight.bold))
               )
             )
           ),

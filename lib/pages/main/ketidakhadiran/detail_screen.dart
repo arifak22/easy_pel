@@ -99,7 +99,7 @@ class DetailScreenState extends State<DetailScreen> {
     }else if(widget.jenis == '2'){
       setState(() {
         jenis           = '8';
-        validate_status = '1';
+        validate_status = '2';
       });
     }
     super.initState();

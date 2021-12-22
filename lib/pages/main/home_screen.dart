@@ -31,10 +31,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Row(
                   children: [
                     Container(
-                      color: Colors.white,
-                      width: 300,
-                      height: 150,
-                      child: Text(''),
+                      // color: Colors.white,
+                      // width: 300,
+                      // height: 150,
+                      // child: Text(''),
                     )
                   ],
                 ),

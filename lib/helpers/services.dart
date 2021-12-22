@@ -75,7 +75,7 @@ isDebug() {
 }
 
 appVersion(){
-  return '1.0.4';
+  return '1.0.5';
 }
 
 localServer(){

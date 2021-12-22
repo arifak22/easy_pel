@@ -16,6 +16,7 @@ class AddScreen extends StatefulWidget {
 class AddScreenState extends State<AddScreen> {
   TextEditingController valueJenis        = TextEditingController();
   TextEditingController valueIjinPenting  = TextEditingController();
+  TextEditingController valuePeriode  = TextEditingController();
   TextEditingController valueAtasan       = TextEditingController();
   TextEditingController valueKeterangan   = TextEditingController();
   TextEditingController valueTglAwal      = TextEditingController(text: DateFormat('y-MM-dd').format(DateTime.now()));
@@ -23,6 +24,7 @@ class AddScreenState extends State<AddScreen> {
   dynamic               optionAtasan      = [];
   dynamic               optionJenisIjin   = [];
   dynamic               optionIjinPenting = [];
+  dynamic               optionPeriode     = [];
   bool                  _isLoadingSubmit  = false;
   dynamic               data              = [];
   bool                  _isReady          = false;
@@ -63,10 +65,14 @@ class AddScreenState extends State<AddScreen> {
       if (val['api_status'] == 1) {
         setState(() {
           optionIjinPenting = val['data'];
+          optionPeriode     = val['periode'];
+          valuePeriode.text = val['periode_selected'];
         });
+
       }else{
         setState(() {
           optionIjinPenting = [];
+          optionPeriode     = [];
         });
       }
     });
@@ -106,6 +112,7 @@ class AddScreenState extends State<AddScreen> {
         'id'             : id,
         'pegawai_id'     : pegawai_id,
         'alasan_cuti'    : valueIjinPenting.text,
+        'periode'        : valuePeriode.text,
         'jenis_ijin'     : valueJenis.text,
         'tanggal_awal'   : valueTglAwal.text,
         'tanggal_akhir'  : valueTglAkhir.text,
@@ -228,6 +235,42 @@ class AddScreenState extends State<AddScreen> {
                           label          : 'Alasan',
                           option         : optionIjinPenting,
                           valueController: valueIjinPenting,
+                        ) : Container(),
+                        valueJenis.text == '10' ? 
+                        Column(
+                          // mainAxisAlignment: MainAxisAlignment.start,
+                          // crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            FormSelect(
+                              label          : 'Periode',
+                              option         : optionPeriode,
+                              valueController: valuePeriode,
+                              refreshData: (){
+                                setState(() {
+                                  valuePeriode.text = valuePeriode.text;
+                                });
+                              },
+                            ),
+                            Text('Sisa Cuti: ' + optionPeriode.firstWhere((value) => value['value'] == valuePeriode.text)['cuti'])
+                          ],
+                        ) : Container(),
+                        valueJenis.text == '26' || valueJenis.text == '27' ? 
+                        Column(
+                          // mainAxisAlignment: MainAxisAlignment.start,
+                          // crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            FormSelect(
+                              label          : 'Periode',
+                              option         : optionPeriode,
+                              valueController: valuePeriode,
+                              refreshData: (){
+                                setState(() {
+                                  valuePeriode.text = valuePeriode.text;
+                                });
+                              },
+                            ),
+                            Text('Sisa Cuti: ' + optionPeriode.firstWhere((value) => value['value'] == valuePeriode.text)['setengah'])
+                          ],
                         ) : Container(),
                         FormDate(
                           label          : 'Tanggal Awal',
