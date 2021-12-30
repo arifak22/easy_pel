@@ -179,6 +179,17 @@ class _AddScreenState extends State<AddScreen> {
         'latitude' : _position.latitude.toString(),
         'longitude': _position.longitude.toString(),
       };
+
+      var dataTemp = {
+        'user_login' : id,
+        'waktu'      : waktu,
+        'jenis_absen': 'I',
+        'foto'       : imgPath,
+        'version'  : appVersion(),
+        'latitude' : _position.latitude.toString(),
+        'longitude': _position.longitude.toString(),
+      };
+
       Services().postApiFile('postPresensi', data, {'foto' : imgPath}).then((val) async {
         // print(val);
         // return;
@@ -205,7 +216,7 @@ class _AddScreenState extends State<AddScreen> {
           });
           var temp = await Services().getSession('temp');
           var tempResult = json.decode(temp);
-          tempResult.add(data);
+          tempResult.add(dataTemp);
           
           preferences = await SharedPreferences.getInstance();
           preferences.setString('temp', json.encode(tempResult));

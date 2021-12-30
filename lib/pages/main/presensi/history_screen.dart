@@ -110,12 +110,20 @@ class _HistoryScreenState extends State<HistoryScreen> {
     // print(tempResult);
   }
   void submitKirim(data, i){
-    print(data);
-
+    print(data['foto']);
+    // return;
     setState(() {
       _isLoading = true;
     });
-    Services().postApi('postTempPresensi', data).then((val) async {
+    var dataInput = {
+        'user_login' : data['user_login'],
+        'waktu'      : data['waktu'],
+        'jenis_absen': 'I',
+        'version'    : data['version'],
+        'latitude'   : data['latitude'],
+        'longitude'  : data['longitude'],
+    };
+    Services().postApiFile('postPresensi', dataInput, {'foto': data['foto']}).then((val) async {
       if (val['api_status'] == 1) {
         refreshData(i);
         setState(() {
