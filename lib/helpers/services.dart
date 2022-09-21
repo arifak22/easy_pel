@@ -67,6 +67,13 @@ var apiList = [
   Api(apiID: 35, name: 'postFotoProfile', uri:'profile/foto_change'),
 
 
+  Api(apiID: 36, name: 'getPegawai', uri:'sip/pegawai'),
+  Api(apiID: 37, name: 'getJamSelamat', uri:'sip/jam_selamat'),
+  Api(apiID: 38, name: 'getTenagaKerja', uri:'sip/tenaga_kerja'),
+  Api(apiID: 39, name: 'getDokumen', uri:'sip/dokumen'),
+  Api(apiID: 40, name: 'postViewDokumen', uri:'sip/view_dokumen'),
+  Api(apiID: 41, name: 'getDashboard', uri:'sip/dashboard'),
+  
 ];
 
 
@@ -75,11 +82,11 @@ isDebug() {
 }
 
 appVersion(){
-  return '1.0.5';
+  return '1.0.7';
 }
 
 localServer(){
-  var local = 'http://10.73.251.7:8080/ci/api';
+  var local = 'http://10.1.234.166:8080/ci/api';
   // var local = 'http://localhost:8080/ci/api';
   return local;
 }

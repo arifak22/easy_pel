@@ -33,6 +33,7 @@ class DetailScreenState extends State<DetailScreen> {
   dynamic history            = [];
   String  sisa_cuti          = '-';
   String  sisa_cuti_setengah = '-';
+  String  sisa_cuti_besar    = '0';
   String  jenis              = '0';
   String  validate_status    = '0';
   String  _color             = '#FFFFFF';
@@ -49,15 +50,17 @@ class DetailScreenState extends State<DetailScreen> {
     });
     Services().getApi('getKetidakhadiranDetail', "pegawai_id=${widget.pegawai_id}&id=${widget.id}").then((val) {
       if (val['api_status'] == 1) {
+        print(val['data']['SISA_CUTI_BESAR']);
         setState(() {
           data               = val['data'];
           sisa_cuti          = val['data']['SISA_CUTI_TAHUNAN'];
           sisa_cuti_setengah = val['data']['SISA_CUTI_SETENGAH'];
+          sisa_cuti_besar    = val['data']['SISA_CUTI_BESAR'] == null ? '0' : val['data']['SISA_CUTI_BESAR'];
           _color             = data['VALIDATE_COLOR2'];
           history            = val['history'];
           _isLoading         = false;
         });
-        print(val['history']);
+        // print(val['history']);
       }else{
         setState(() {
           data = [];
@@ -327,9 +330,9 @@ class DetailScreenState extends State<DetailScreen> {
                                 borderRadius: BorderRadius.all(Radius.circular(25)),
                                 border: Border.all(color: MyColor('line'))
                             ),
-                            child: Text('Sisa Cuti Tahunan: ' + sisa_cuti),
+                            child: int.parse(sisa_cuti_besar) <= 0 ? Text('Sisa Cuti Tahunan: ' + sisa_cuti) : Text('Sisa Cuti Besar: ' + sisa_cuti_besar),
                           ),
-                          Container(
+                          int.parse(sisa_cuti_besar) <= 0 ? Container(
                             margin: EdgeInsets.only(right: 5),
                             padding: EdgeInsets.only(top: 5, bottom: 5, left: 15, right: 15),
                             decoration: BoxDecoration(
@@ -338,7 +341,7 @@ class DetailScreenState extends State<DetailScreen> {
                                 border: Border.all(color: MyColor('line'))
                             ),
                             child: Text('Sisa Cuti Setengah Hari: ' + sisa_cuti_setengah),
-                          ),
+                          ) : Container(),
                         ]
                       )
                     ),

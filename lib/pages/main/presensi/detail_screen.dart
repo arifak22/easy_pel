@@ -70,7 +70,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   ..style = PaintingStyle.stroke,
                 ),
               ),
-              Text('29 November 2021', 
+              Text(widget.data['TANGGAL_INDO'], 
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)
               ),
               Divider(

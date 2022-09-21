@@ -4,6 +4,11 @@ import 'package:easy_pel/pages/main/check/view_screen.dart' as MenuChecking;
 import 'package:easy_pel/pages/main/check/selfcheck/view_screen.dart' as MenuSelfcheck;
 import 'package:easy_pel/pages/main/check/location/view_screen.dart' as MenuLocation;
 
+
+import 'package:easy_pel/pages/main/sip/view_screen.dart' as MenuSip;
+import 'package:easy_pel/pages/main/sip/dokumen_screen.dart';
+import 'package:easy_pel/pages/main/sip/dokview_screen.dart';
+
 import 'package:easy_pel/pages/main/ketidakhadiran/detail_screen.dart' as DetailKetidakhadiran;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -71,6 +76,24 @@ Future<void> handleNotif(data, context) async {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => MenuLocation.ViewScreen()),
+          );
+        break;
+
+        case '8': //GO TO EVENT
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => MenuSip.ViewScreen()),
+          // );
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => DokumenScreen(tipe: data['view'])),
+          // );
+          Navigator.push(
+            context,
+              MaterialPageRoute(builder: (context) => 
+              DokviewScreen(data: data['data'])
+            // ImgviewScreen(path: file.path, data: data)
+            )
           );
         break;
 

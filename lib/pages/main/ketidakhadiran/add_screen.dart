@@ -54,6 +54,7 @@ class AddScreenState extends State<AddScreen> {
         setState(() {
           optionJenisIjin = val['data'];
         });
+        print(val['data']);
       }else{
         setState(() {
           optionJenisIjin = [];
@@ -62,6 +63,7 @@ class AddScreenState extends State<AddScreen> {
     });
 
     Services().getApi('getListIjinPenting', "pegawai_id=${pegawai_id}").then((val) {
+      print(val);
       if (val['api_status'] == 1) {
         setState(() {
           optionIjinPenting = val['data'];
