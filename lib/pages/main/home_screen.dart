@@ -10,6 +10,7 @@ import 'package:easy_pel/helpers/widget.dart';
 import 'package:flutter/widgets.dart';
 import 'package:animated_flip_counter/animated_flip_counter.dart';
 import 'package:intl/intl.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -110,14 +111,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     itemCount: countImages,
                     pageSnapping: true,
                     itemBuilder: (context,pagePosition){
+                      print(images[pagePosition]);
                       return Container(
                       constraints: BoxConstraints.expand(),
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image:NetworkImage(images[pagePosition]),
-                            fit: BoxFit.cover
-                          ),
-                        )
+                        child: CachedNetworkImage(
+                            imageUrl: images[pagePosition],
+                            placeholder: (context, url) => Center(child: CircularProgressIndicator(),),
+                            errorWidget: (context, url, error) => Icon(Icons.error),
+                            fit: BoxFit.cover,
+                        ),
                       );
                     }
                   ) :Center(child: CircularProgressIndicator(),) 
