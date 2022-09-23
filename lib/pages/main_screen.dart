@@ -70,7 +70,7 @@ class _MainScreenState extends State<MainScreen> {
                 ),
                 actions: <Widget>[
                   // usually buttons at the bottom of the dialog
-                  new FlatButton(
+                  new TextButton(
                     child: new Text("Close"),
                     onPressed: () {
                       Navigator.of(context).pop();
@@ -130,13 +130,13 @@ class _MainScreenState extends State<MainScreen> {
             type: BottomNavigationBarType.fixed,                                   
             items: <BottomNavigationBarItem>[                                        
               BottomNavigationBarItem(                                               
-                icon: Icon(_currentIndex == 0 ? Icons.home_rounded : Icons.home_outlined), title: Text('Beranda')
+                icon: Icon(_currentIndex == 0 ? Icons.home_rounded : Icons.home_outlined), label: 'Beranda'
               ),
               BottomNavigationBarItem(                                               
-                icon: Icon(_currentIndex == 1 ? Icons.favorite_rounded : Icons.favorite_border_outlined), title: Text('Presensi')
+                icon: Icon(_currentIndex == 1 ? Icons.favorite_rounded : Icons.favorite_border_outlined), label: 'Presensi'
               ),
               BottomNavigationBarItem(                                               
-                icon: Icon(_currentIndex == 2 ? Icons.account_circle_rounded : Icons.account_circle_outlined), title: Text('Profil')
+                icon: Icon(_currentIndex == 2 ? Icons.account_circle_rounded : Icons.account_circle_outlined), label: 'Profil'
               ),
             ],
             // showSelectedLabels: false,
