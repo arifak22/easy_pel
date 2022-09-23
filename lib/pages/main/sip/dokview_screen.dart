@@ -84,6 +84,7 @@ class _DokviewScreenState extends State<DokviewScreen> with WidgetsBindingObserv
       }
     });
   }
+
   Future<File> createFileOfPdfUrl(url) async {
     Completer<File> completer = Completer();
     try {
@@ -160,8 +161,8 @@ class _DokviewScreenState extends State<DokviewScreen> with WidgetsBindingObserv
                         minScale: 0.5,
                         maxScale: 2,
                         child:
-                        Image.network(widget.data['DOKUMEN'])
-                        // Image.asset(snapshot.data!.path)
+                        // Image.network(widget.data['DOKUMEN'])
+                        Image.asset(snapshot.data!.path)
                       ) 
                     ): 
                     PDFView(
