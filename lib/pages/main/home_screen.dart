@@ -117,7 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: CachedNetworkImage(
                             imageUrl: images[pagePosition],
                             placeholder: (context, url) => Center(child: CircularProgressIndicator(),),
-                            errorWidget: (context, url, error) => Icon(Icons.error),
+                            errorWidget: (context, url, error) => Icon(Icons.image_not_supported_outlined),
                             fit: BoxFit.cover,
                         ),
                       );
