@@ -32,7 +32,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
   Widget listPresensi(dynamic data, int i){
     MaterialColor _color = Colors.blue;
-    DateFormat format = DateFormat("yyyy-MM-dd hh:mm:ss");
+    // DateFormat format = DateFormat("yyyy-MM-dd hh:mm:ss");
+    DateFormat format = DateFormat("y-MM-d HH:mm:ss");
     return Container(
       width  : double.infinity,
       margin : EdgeInsets.only(bottom: 20, left: 20, right: 20),
@@ -62,7 +63,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: 5),
-                    child:  Text(DateFormat('hh:mm:ss', 'id_ID').format(format.parse(data['waktu'])))
+                    child:  Text(DateFormat('HH:mm:ss', 'id_ID').format(format.parse(data['waktu'])))
                   )
                 ],
               )
@@ -110,7 +111,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
     // print(tempResult);
   }
   void submitKirim(data, i){
-    print(data['foto']);
+    // print(data);
     // return;
     setState(() {
       _isLoading = true;

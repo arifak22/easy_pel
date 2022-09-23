@@ -41,8 +41,9 @@ class _AddScreenState extends State<AddScreen> {
   late bool isTrue = false;
   late bool _isLoading = false;
   late bool inProses = false;
-  String waktuText = DateFormat('d MMMM y - hh:mm:ss', 'id_ID').format(DateTime.now());
-  String waktu = DateFormat('y-m-d hh:mm:ss').format(DateTime.now());
+  String waktuText = DateFormat('d MMMM y - HH:mm:ss', 'id_ID').format(DateTime.now());
+  String waktu = DateFormat('y-MM-d HH:mm:ss').format(DateTime.now());
+  // String waktu = DateFormat('y-mm-d hh:mm:ss').format(DateTime.now().add(Duration(hours: 10)));
   double radius = 1000.00;
   String imgPath = '';
   Set<Circle> circles = Set.from([
@@ -56,7 +57,7 @@ class _AddScreenState extends State<AddScreen> {
     )
   ]);
 
-  void _add() async{
+  _add() async{
     if(!mounted) return;
     setState(() {
       inProses = true;
@@ -163,6 +164,21 @@ class _AddScreenState extends State<AddScreen> {
   late SharedPreferences preferences;
   late Map<String, dynamic> data;
   Future <void> submitPresensi() async {
+    await this._add();
+    if(!isTrue){
+      showDialog(context: context, builder: (_) =>AlertDialog(
+        title: Text('Info'),
+        content: Text('Diluar radius absen ✌🏼'),
+        actions: <Widget>[
+            ElevatedButton(
+              onPressed: ()=> {
+                Navigator.pop(context),
+              }, child: Text('Close'),
+            ),
+          ],
+      ));
+      return;
+    }
     if(imgPath != ''){
       setState(() {
         _isLoading = true;
@@ -231,7 +247,7 @@ class _AddScreenState extends State<AddScreen> {
 
       showDialog(context: context, builder: (_) =>AlertDialog(
         title: Text('Info'),
-        content: Text('Belum melakukan pengambilan Foto'),
+        content: Text('Tambahkan Foto 📸'),
         actions: <Widget>[
             ElevatedButton(
               onPressed: ()=> {
@@ -328,8 +344,11 @@ class _AddScreenState extends State<AddScreen> {
                     children: <Widget>[
                       Container(
                         margin: EdgeInsets.only(bottom: 15),
-                        child: Text(waktuText, 
+                        child: 
+                        Text(waktuText, 
                           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
+                        // Text(DateFormat('y-MM-d HH:mm:ss').format(DateTime.now().add(Duration(hours: 10)))),
+                        // Text(waktu)
                       ),
                       Container(
                         width: double.infinity,
