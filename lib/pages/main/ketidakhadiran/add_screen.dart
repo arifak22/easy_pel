@@ -6,6 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
+extension TimeOfDayConverter on TimeOfDay {
+  String to24hours() {
+    final hour = this.hour.toString().padLeft(2, "0");
+    final min = this.minute.toString().padLeft(2, "0");
+    return "$hour:$min";
+  }
+}
+
 class AddScreen extends StatefulWidget {
   final String? id;
   AddScreen({this.id});
@@ -16,11 +24,12 @@ class AddScreen extends StatefulWidget {
 class AddScreenState extends State<AddScreen> {
   TextEditingController valueJenis        = TextEditingController();
   TextEditingController valueIjinPenting  = TextEditingController();
-  TextEditingController valuePeriode  = TextEditingController();
+  TextEditingController valuePeriode      = TextEditingController();
   TextEditingController valueAtasan       = TextEditingController();
   TextEditingController valueKeterangan   = TextEditingController();
   TextEditingController valueTglAwal      = TextEditingController(text: DateFormat('y-MM-dd').format(DateTime.now()));
   TextEditingController valueTglAkhir     = TextEditingController(text: DateFormat('y-MM-dd').format(DateTime.now()));
+  TextEditingController valueJam          = TextEditingController();
   dynamic               optionAtasan      = [];
   dynamic               optionJenisIjin   = [];
   dynamic               optionIjinPenting = [];
@@ -101,7 +110,7 @@ class AddScreenState extends State<AddScreen> {
         _isLoadingSubmit = true;
       });
       print(valueTglAkhir.text);
-      if(dateToDouble(valueTglAwal.text) > dateToDouble(valueTglAkhir.text)){
+      if((dateToDouble(valueTglAwal.text) > dateToDouble(valueTglAkhir.text)) && valueJenis.text != '31'){
           return showDialog(context: context, builder: (_) =>AlertDialog(
             title: Text('Something wrong'),
             content: Text('Pemilihan Tanggal Tidak Valid'),
@@ -120,6 +129,7 @@ class AddScreenState extends State<AddScreen> {
         'tanggal_akhir'  : valueTglAkhir.text,
         'keterangan'     : valueKeterangan.text,
         'validate_atasan': valueAtasan.text,
+        'jam'            : valueJam.text,
       };
       Services().postApi('postKetidakhadiran', data).then((val) async {
         setState(() {
@@ -169,6 +179,7 @@ class AddScreenState extends State<AddScreen> {
           valueTglAwal.text     = val['data']['TGL_AWAL'];
           valueTglAkhir.text    = val['data']['TGL_AKHIR'];
           valueAtasan.text      = val['data']['VALIDATE_PEJABAT'];
+          valueJam.text         = val['data']['JAM'];
           _isReady              = true;
         });
       }
@@ -240,8 +251,6 @@ class AddScreenState extends State<AddScreen> {
                         ) : Container(),
                         valueJenis.text == '10' ? 
                         Column(
-                          // mainAxisAlignment: MainAxisAlignment.start,
-                          // crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             FormSelect(
                               label          : 'Periode',
@@ -258,8 +267,6 @@ class AddScreenState extends State<AddScreen> {
                         ) : Container(),
                         valueJenis.text == '26' || valueJenis.text == '27' ? 
                         Column(
-                          // mainAxisAlignment: MainAxisAlignment.start,
-                          // crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             FormSelect(
                               label          : 'Periode',
@@ -279,11 +286,42 @@ class AddScreenState extends State<AddScreen> {
                           valueController: valueTglAwal,
                           isLoading      : !_isReady,
                         ),
+                        valueJenis.text != '31' ? 
                         FormDate(
                           label          : 'Tanggal Akhir',
                           valueController: valueTglAkhir,
                           isLoading: !_isReady,
-                        ),
+                        ) : Container(),
+                        valueJenis.text == '31' ? 
+                        Container(
+                          margin: FormMargin,
+                          child: new TextFormField(
+                            decoration: InputDecoration(
+                              labelText: 'Jam',
+                              contentPadding: EdgeInsets.all(5),
+                              suffixIcon: Icon(MdiIcons.clock)
+                            ),
+                            readOnly: true,
+                            enabled: true,
+                            validator: (val){
+                              if (val!.isEmpty && valueJenis.text == '31') {
+                                return 'Jam is empty';
+                              }
+                            },
+                            controller: valueJam,
+                            onTap: () async{
+                              FocusScope.of(context).requestFocus(new FocusNode());
+                              TimeOfDay? picked = await showTimePicker(
+                                context: context,
+                                initialTime: const TimeOfDay(hour: 8, minute: 0),
+                              );
+                              if (picked != null) {
+                              valueJam.text = picked.to24hours();
+                            }
+                            },
+                            onEditingComplete: () => FocusScope.of(context).nextFocus(),
+                          ),
+                        ) : Container(),
                         FormText(
                           label          : 'Keterangan',
                           valueController: valueKeterangan,

@@ -421,7 +421,7 @@ class DetailScreenState extends State<DetailScreen> {
                           Text(data['JENIS_IJIN']),
                           // Text(''),
                           Text('Permohonan: \n' + data['TANGGAL_PERMOHONAN_INDO']),
-                          Text('Waktu : \n' + data['TANGGAL_AWAL_INDO'] + ' s/d ' + data['TANGGAL_AKHIR_INDO']),
+                          Text(data['IJIN_ID'] != '31' ? 'Waktu : \n' + data['TANGGAL_AWAL_INDO'] + ' s/d ' + data['TANGGAL_AKHIR_INDO'] : 'Waktu : \n' + data['TANGGAL_AWAL_INDO'] + ' (' + data['JAM'] + ')'),
                         ],
                       )
                     ),

@@ -29,7 +29,10 @@ class ViewScreenState extends State<ViewScreen> {
   ScrollController _scrollController = ScrollController();
 
   Widget listKetidakhadiran(dynamic data){
-
+    String waktu = 'Waktu : \n' + data['TANGGAL_AWAL_INDO'] + ' s/d ' + data['TANGGAL_AKHIR_INDO'];
+    if(data['IJIN_ID'] == '31'){
+      waktu = 'Waktu : \n' + data['TANGGAL_AWAL_INDO'] + ' (' + data['JAM'] + ')';
+    }
     return Container(
       width  : double.infinity,
       margin : EdgeInsets.only(bottom: 20, left: 20, right: 20),
@@ -89,7 +92,7 @@ class ViewScreenState extends State<ViewScreen> {
                 ),
               ],
             ),
-            Text('Waktu : \n' + data['TANGGAL_AWAL_INDO'] + ' s/d ' + data['TANGGAL_AKHIR_INDO'])
+            Text(waktu)
           ],
         ),
       )
