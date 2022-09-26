@@ -123,6 +123,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
         'version'    : data['version'],
         'latitude'   : data['latitude'],
         'longitude'  : data['longitude'],
+        'isMock'     : data['isMock'],
     };
     Services().postApiFile('postPresensi', dataInput, {'foto': data['foto']}).then((val) async {
       if (val['api_status'] == 1) {

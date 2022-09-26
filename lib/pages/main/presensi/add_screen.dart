@@ -20,6 +20,7 @@ import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:easy_pel/helpers/widget.dart';
+import 'package:trust_location/trust_location.dart';
 
 class AddScreen extends StatefulWidget {
   @override
@@ -165,6 +166,12 @@ class _AddScreenState extends State<AddScreen> {
   late Map<String, dynamic> data;
   Future <void> submitPresensi() async {
     await this._add();
+    bool isMockLocation = false;
+
+    if(Platform.isAndroid)
+    isMockLocation = await TrustLocation.isMockLocation;
+    
+    print(isMockLocation);
     if(!isTrue){
       showDialog(context: context, builder: (_) =>AlertDialog(
         title: Text('Info'),
@@ -194,6 +201,7 @@ class _AddScreenState extends State<AddScreen> {
         'version'  : appVersion(),
         'latitude' : _position.latitude.toString(),
         'longitude': _position.longitude.toString(),
+        'isMock'   : isMockLocation
       };
 
       var dataTemp = {
@@ -204,7 +212,10 @@ class _AddScreenState extends State<AddScreen> {
         'version'  : appVersion(),
         'latitude' : _position.latitude.toString(),
         'longitude': _position.longitude.toString(),
+        'isMock'   : isMockLocation
       };
+
+
 
       Services().postApiFile('postPresensi', data, {'foto' : imgPath}).then((val) async {
         // print(val);
